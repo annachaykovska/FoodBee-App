@@ -1,0 +1,151 @@
+﻿.map {
+    z-index: 0;
+    min-height: 100vh;
+    width: 100%;
+    background-image: url("Images/map.png");
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    -webkit-filter: brightness(85%);
+}
+
+.blur-map {
+    filter: blur(8px) brightness(70%);
+    -webkit-filter: blur(8px) brightness(70%);
+}
+
+.title {
+    position: fixed;
+    top: 10px;
+    left: 20px;
+    z-index: 1;
+    text-align: center;
+}
+
+.title-main {
+    /*border: 4px solid goldenrod;*/
+    font-size: 32px;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.1);
+    background-color: darkgoldenrod;
+    padding: 0px 25px;
+    border-radius: 16px;
+    margin: 2px -15px;
+}
+
+.title-sub {
+    /*border: 2px solid darkgoldenrod;*/
+    background-color: goldenrod;
+    box-shadow: 0px 8px 15px rgba(0, 0, 0, 0.4);
+    border-radius: 8px;
+    padding: 1px 20px;
+    /*margin: 0px 10px;*/
+}
+
+/* Hex flex grid layout adapted from https://css-tricks.com/hexagons-and-beyond-flexible-responsive-grid-patterns-sans-media-queries/*/
+.menu {
+    right: -47px;
+    z-index: 2;
+    position: fixed;
+    top: 0px;
+    width: 420px;
+    display: flex;
+    --s: 98px; /* size  */
+    --m: 4px; /* margin */
+    --f: calc(1.732 * var(--s) + 4 * var(--m) - 1px);
+}
+
+.hide-menu {
+    visibility: hidden;
+}
+
+.menu-container {
+    padding: 0;
+    font-size: 0; /*disable white space between inline block element */
+}
+
+.menu-item-content {
+    margin: 0 auto;
+}
+
+.menu-container div {
+    filter: drop-shadow(-1px 6px 3px rgba(50, 50, 0, 0.5));
+    position: relative;
+    width: var(--s);
+    margin: var(--m);
+    height: calc(var(--s)*1.1547);
+    display: inline-block;
+    font-size: initial;
+    clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
+    background: goldenrod;
+    outline: 2px solid goldenrod;
+    margin-bottom: calc(var(--m) - var(--s)*0.2885);
+}
+
+    .menu-container div:hover {
+        cursor: pointer;
+    }
+
+
+.menu-container::before {
+    content: "";
+    width: calc(var(--s)/2 + var(--m));
+    float: left;
+    height: 120%;
+    shape-outside: repeating-linear-gradient( #0000 0 calc(var(--f) - 3px), #000 0 var(--f));
+}
+
+.menu-icon {
+    font-size: 30px;
+    margin: 0%;
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    -o-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.icon-label {
+    font-size: 16px;
+    margin: 0%;
+    position: absolute;
+    width: fit-content;
+    bottom: 10%;
+    left: 50%;
+    -o-transform: translate(-50%, -50%);
+    -ms-transform: translate(-50%, -50%);
+    -moz-transform: translate(-50%, -50%);
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.toggle {
+    top: 30%;
+    left: 30%;
+}
+
+.ripple {
+    background-position: center;
+    transition: background 0.8s;
+}
+
+.ripple:hover {
+    /*background: #47a7f5 radial-gradient(circle, transparent 1%, #47a7f5 1%) center/15000%;*/
+}
+
+.ripple:active {
+    background-color: darkgoldenrod;
+    background-size: 100%;
+    transition: background 0s;
+}
+
+.active { 
+    background: darkgoldenrod !important;
+}
+
+.confirm {
+    background: #8bc34a;
+}

@@ -1,5 +1,218 @@
 ﻿@page "/"
+@using FoodBee.Models
 
-<h1>Hello, world!</h1>
+<div class="map @MapCssClass"></div>
 
-Welcome to your new app.
+<div class="title @TitleCssClass">
+    <div class="title-sub">
+        Welcome
+    </div>
+    <div class="title-main">
+        FoodBee
+    </div>
+    <div class="title-sub">
+        YYC Beer Festival
+    </div>
+</div>
+
+<div class="menu">
+    <div class="menu-container">
+        <div style="visibility: hidden"><span class="menu-icon">1</span></div>
+        <div style="visibility: hidden"><span class="menu-icon">2</span></div>
+ 
+        <div class="ripple" @onclick="@ClearFilters" style="@ClearBtn">
+            @* Search/clear filters hex *@
+            @if (collapseMenu)
+            {
+                    <span class="menu-icon">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                    </span>
+                    <span class="icon-label">
+                        Search
+                    </span>
+            } 
+            else
+            {
+@*                <div class="ripple" @onclick="@ClearFilters" style="background-color: #ff5722">
+*@                    <span class="menu-icon">
+                        <i class="fa-solid fa-x"></i>
+                    </span>
+                    <span class="icon-label">
+                        Clear all
+                    </span>
+            
+            }
+        </div>
+
+        @*First two filters for spacing purposes*@
+        @for (int i = 0; i < 2; i++)
+        {
+            var index = i;
+            <div class="@MenuCssClass @ActiveCssClass(index)" @onclick="(e => ToggleFilter(index))">
+                <span class="menu-icon">
+                    <i class="fa-solid @filters[i].IconSelector"></i>
+                </span>
+                <span class="icon-label">
+                    @filters[i].Name
+                </span>
+            </div>
+        }
+
+
+        <div class="ripple" @onclick="@ToggleNavMenu" style="@ConfirmBtn">
+            @*Filter/confirm filters hex buttons *@
+            @if (collapseMenu)
+            {
+                    <span class="menu-icon">
+                        <i class="fa-solid fa-layer-group"></i>
+                    </span>
+                    <span class="icon-label">
+                        @NumActive() Filters
+                    </span>
+            } 
+            else
+            {     
+                    <span class="menu-icon">
+                        <i class="fa-solid fa-check"></i>
+                    </span>
+                    <span class="icon-label">
+                        Confirm
+                    </span>     
+            }
+        </div>
+
+        @*Remainging fitler hex buttons *@
+        @for (int i = 2; i < filters.Length; i++)
+        {
+            var index = i;
+            <div class="@MenuCssClass @ActiveCssClass(index)" @onclick="(e => ToggleFilter(index))">
+                <span class="menu-icon">
+                    <i class="fa-solid @filters[i].IconSelector"></i>
+                </span>
+                <span class="icon-label">
+                    @filters[i].Name
+                </span>
+            </div>
+        }
+    </div>
+</div>
+
+
+@code {
+
+    private bool collapseMenu = true;
+
+    private void ToggleFilter(int i) => filters[i].Active = !filters[i].Active;
+    private void ClearFilters()
+    {
+        foreach (Filter f in filters)
+        {
+            f.Active = false;
+        }
+        ToggleNavMenu();
+    }
+    private void ToggleNavMenu() => collapseMenu = !collapseMenu;
+
+
+    private string ActiveCssClass(int i) => filters[i].Active ? "active" : null;
+    private string MenuCssClass => collapseMenu ? "hide-menu" : null;
+    private string TitleCssClass => collapseMenu ? null : "hide-menu";
+    private string MapCssClass => collapseMenu ? null : "blur-map";
+
+    private string ConfirmBtn => collapseMenu ? null : "background-color: #8bc34a;";
+    private string ClearBtn => collapseMenu ? null : "background-color: #ff5722;";
+
+    private string NumActive()
+    {
+        int num = 0;
+        foreach (Filter f in filters)
+        {
+            if (f.Active) num++;
+        }
+        return num > 0 ? "(" + num + ")" : "";
+    }
+
+    public Filter[] filters = new[]
+    {
+        new Filter
+        {
+            Name = "Drinks",
+            Active = false,
+            IconSelector = "fa-whiskey-glass"
+        },
+        new Filter
+        {
+            Name = "Food", 
+            Active = false,
+            IconSelector = "fa-utensils"
+
+        },
+        new Filter
+        {
+            Name = "Vegan", 
+            Active = false,
+            IconSelector = "fa-leaf"
+        },
+        new Filter
+        {
+            Name = "Events", 
+            Active = false,
+            IconSelector = "fa-calendar"
+        },
+        new Filter
+        {
+            Name = "Info", 
+            Active = false,
+            IconSelector = "fa-circle-info"
+        },
+        new Filter
+        {
+            Name = "Help", 
+            Active = false,
+            IconSelector = "fa-circle-question"
+        },
+        new Filter
+        {
+            Name = "Favourites", 
+            Active = false,
+            IconSelector = "fa-heart"
+        },
+        new Filter
+        {
+            Name = "Water", 
+            Active = false,
+            IconSelector = "fa-faucet"
+        },
+        new Filter
+        {
+            Name = "Washrooms", 
+            Active = false,
+            IconSelector = "fa-restroom"
+        },
+        new Filter
+        {
+            Name = "First aid", 
+            Active = false,
+            IconSelector = "fa-kit-medical"
+        },
+        new Filter
+        {
+            Name = "Security", 
+            Active = false,
+            IconSelector = "fa-shield"
+        },
+        new Filter
+        {
+            Name = "ATMs", 
+            Active = false,
+            IconSelector = "fa-credit-card"
+        },
+        new Filter
+        {
+            Name = "Accessible", 
+            Active = false,
+            IconSelector = "fa-wheelchair"
+        },
+    };
+  
+}
