@@ -1,0 +1,13 @@
+﻿
+
+.filter-btn {
+    margin: 5px;
+    border-radius: 25px;
+}
+
+.filter-icon {
+    margin: 0 5px;
+    background-color: goldenrod;
+    padding: 10px;
+    border-radius: 50%;
+}
