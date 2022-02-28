@@ -1,34 +1,36 @@
 ﻿@page "/vendor"
 
-<div style="padding: 5px;">
+<div class="container">
     <div class="input-group">
         <NavLink href="/">
-            <button type="button" class="btn btn-outline-dark"><i class="fa-solid fa-angle-left"></i></button>
+            <button onclick="window.history.go(-1);" type="button" class="btn btn-outline-dark"><i class="fa-solid fa-angle-left"></i></button>
         </NavLink>
         <div style="margin-left: 10px; flex: 1;">
             <h3>Vendor Name</h3>
         </div>
     </div>
+
+    <div class="card">
+        <img src="https://via.placeholder.com/400x200.png" class="img-fluid rounded-start" alt="...">
+        <div class="card-body">
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        <p>Some information abouot the vendor and their mission, products, etc.</p>
+        </div>
+        <h5 class="card-title" style="margin-left: 10px;">Products</h5>
+        <ul class="list-group list-group-flush">
+            @for (int i = 0; i < 5; i++)
+            {
+                <li class="list-group-item"><a href="product" style="display: inline-block; width: 100%">Product #@i<i class="fa-solid fa-angle-right" style="float: right"></i></a></li>
+            }
+        </ul>
+        <div class="card-body">
+            <button type="button" class="btn btn-primary btn-lg btn-block"><i class="fa-solid fa-map-pin"></i> Booth Location</button>
+            <button type="button" class="btn btn-secondary btn-lg btn-block"><i class="fa-solid fa-basket-shopping"></i> Where to Buy</button>
+        </div>
+    </div>
+
 </div>
 
-<div class="card" style="margin: 5px;">
-    <img src="https://via.placeholder.com/400x200.png" class="img-fluid rounded-start" alt="...">
-    <div class="card-body">
-    <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-    <p>Some information abouot the vendor and their mission, products, etc.</p>
-    </div>
-   <h5 class="card-title" style="margin-left: 10px;">Products</h5>
-    <ul class="list-group list-group-flush">
-        @for (int i = 0; i < 5; i++)
-        {
-            <li class="list-group-item"><a href="product" style="display: inline-block; width: 100%">Product #@i<i class="fa-solid fa-angle-right" style="float: right"></i></a></li>
-        }
-    </ul>
-    <div class="card-body">
-        <button type="button" class="btn btn-primary btn-lg btn-block"><i class="fa-solid fa-map-pin"></i> Booth Location</button>
-        <button type="button" class="btn btn-secondary btn-lg btn-block"><i class="fa-solid fa-basket-shopping"></i> Where to Buy</button>
-    </div>
-</div>
 
 @code {
 
