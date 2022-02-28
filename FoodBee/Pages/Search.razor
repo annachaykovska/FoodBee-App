@@ -2,6 +2,7 @@
 @using FoodBee.Models
 @using FoodBee.Services
 
+@*Top search/filter bar*@
 <div style="padding: 5px;">
     <div class="input-group">
         <NavLink href="/">
@@ -9,24 +10,25 @@
         </NavLink>
         <input style="margin: 0 5px;" type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
         <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
+            <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
                 <i class="fa-solid fa-arrow-down-wide-short"></i>
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item">Cheapest</a>
-                <a class="dropdown-item">Closest</a>
-                <a class="dropdown-item active">Newest</a>
+                <a class="dropdown-item active">Closest</a>
+                <a class="dropdown-item">Newest</a>
             </div>
         </div>
     </div>
 </div>
 
+@*Filters accordion*@
 <div class="accordion" id="accordionExample">
     <div class="card">
         <div class="card-header" id="headingOne">
             <h2 class="mb-0">
                 <button class="btn btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" @onclick="ToggleFiltersTray">
-                    Filters
+                    @FilterService.NumActive() Filters
                     <span style="float: right"><i class="fa-solid fa-angle-down @RotateIconClass"></i></span>
                 </button>
             </h2>
@@ -34,7 +36,7 @@
 
         <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
             <div class="card-body">
-                @FilterService.NumActive() Active
+                Active
                 <br />
                 @foreach(Filter filter in FilterService.Filters.Where(f => f.Active))
                 {
@@ -50,9 +52,10 @@
     </div>
 </div>
 
+@*Display vendors*@
 @for (int i = 0; i < 10; i++)
 {
-    <div class="card mb-3" style="margin: 5px;">
+    <a class="card mb-3" style="margin: 5px; text-decoration: none; color: initial" href="vendor">
         <div class="row g-0">
             <div class="col-sm-2">
                 <img src="https://via.placeholder.com/400x200.png" class="img-fluid rounded-start" alt="...">
@@ -65,7 +68,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </a>
 }
 
 @code {
