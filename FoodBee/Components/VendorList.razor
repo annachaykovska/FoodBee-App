@@ -1,0 +1,61 @@
+﻿@using FoodBee.Models
+
+@*Display vendors*@
+@foreach (Vendor v in Vendors)
+{
+    <a class="card mb-3" style="margin: 5px; text-decoration: none; color: initial" href="vendor">
+        <div class="row g-0">
+            <div class="col-sm-2">
+                <img src="@v.ImageUrl" class="img-fluid rounded-start" alt="...">
+            </div>
+            <div class="col-sm-10">
+                <div class="card-body">
+                    <h5 class="card-title">@v.Name</h5>
+                    <p class="card-text">@v.Description</p>
+                </div>
+            </div>
+        </div>
+    </a>
+}
+
+@code {
+    public List<Vendor> Vendors = new List<Vendor>()
+    {
+        new Vendor
+        {
+            Name = "Daniel's Desserts",
+            Description = "We have everything from cakes to mini cupcakes. You’ll always wish you bought more",
+            ImageUrl = "...",
+            Booth = 70
+        },
+        new Vendor
+        {
+            Name = "Anna's Appetizers",
+            Description = "",
+            ImageUrl = "",
+            Booth = 24
+        },
+        new Vendor
+        {
+            Name = "Meriam's Mexican Stand",
+            Description = "",
+            ImageUrl = "",
+            Booth = 31
+        },
+        new Vendor
+        {
+            Name = "Ben's Burgers",
+            Description = "",
+            ImageUrl = "",
+            Booth = 3
+        },
+        new Vendor
+        {
+            Name = "Ctrl+Malt+Del",
+            Description = "Providing full coverage in the beer market since the epoch.",
+            ImageUrl = "https://cdn.discordapp.com/attachments/930235478324699181/949037699875078144/unknown.png",
+            Booth = 12
+        }
+    };
+
+}

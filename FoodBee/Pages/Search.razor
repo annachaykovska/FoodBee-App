@@ -1,74 +1,64 @@
 ﻿@page "/search"
 @using FoodBee.Models
 @using FoodBee.Services
+@using FoodBee.Components
 
-<div style="padding: 5px;">
+<div class="container">
+
+    @*Top search/filter bar*@
     <div class="input-group">
-        <NavLink href="/">
-            <button type="button" class="btn btn-light"><i class="fa-solid fa-angle-left"></i></button>
-        </NavLink>
+        <button onclick="window.history.go(-1);" type="button" class="btn btn-outline-dark"><i class="fa-solid fa-angle-left"></i></button>
         <input style="margin: 0 5px;" type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+
         <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
+            <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
                 <i class="fa-solid fa-arrow-down-wide-short"></i>
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item">Cheapest</a>
-                <a class="dropdown-item">Closest</a>
-                <a class="dropdown-item active">Newest</a>
+                <a class="dropdown-item active">Closest</a>
+                <a class="dropdown-item">Newest</a>
             </div>
         </div>
     </div>
-</div>
-
-<div class="accordion" id="accordionExample">
-    <div class="card">
-        <div class="card-header" id="headingOne">
-            <h2 class="mb-0">
-                <button class="btn btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" @onclick="ToggleFiltersTray">
-                    Filters
-                    <span style="float: right"><i class="fa-solid fa-angle-down @RotateIconClass"></i></span>
-                </button>
-            </h2>
-        </div>
-
-        <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
-            <div class="card-body">
-                @FilterService.NumActive() Active
-                <br />
-                @foreach(Filter filter in FilterService.Filters.Where(f => f.Active))
-                {
-                    <button @onclick="@(e => FilterService.ToggleFilter(filter))" type="button" class="btn btn-warning filter-btn">@filter.Name <i class="fa-solid fa-xmark"></i></button>
-                }
-                <hr />
-                @foreach(Filter filter in FilterService.Filters.Where(f => !f.Active))
-                {
-                    <button @onclick="@(e => FilterService.ToggleFilter(filter))" type="button" class="btn btn-warning filter-btn">@filter.Name <i class="fa-solid fa-plus"></i></button>
-                }
+    @*Filters accordion*@
+    <div class="accordion" id="accordionExample">
+        <div class="card">
+            <div class="card-header" id="headingOne">
+                <h2 class="mb-0">
+                    <button class="btn btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" @onclick="ToggleFiltersTray">
+                        @FilterService.NumActive() Filters
+                        <span style="float: right"><i class="fa-solid fa-angle-down @RotateIconClass"></i></span>
+                    </button>
+                </h2>
             </div>
-        </div>
-    </div>
-</div>
 
-@for (int i = 0; i < 10; i++)
-{
-    <div class="card mb-3" style="margin: 5px;">
-        <div class="row g-0">
-            <div class="col-sm-2">
-                <img src="https://via.placeholder.com/400x200.png" class="img-fluid rounded-start" alt="...">
-            </div>
-            <div class="col-sm-10">
+            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
                 <div class="card-body">
-                    <h5 class="card-title">Card title</h5>
-                    <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                    <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                    Active
+                    <br />
+                    @foreach(Filter filter in FilterService.Filters.Where(f => f.Active))
+                    {
+                        <button @onclick="@(e => FilterService.ToggleFilter(filter))" type="button" class="btn btn-warning filter-btn">@filter.Name <i class="fa-solid fa-xmark"></i></button>
+                    }
+                    <hr />
+                    @foreach(Filter filter in FilterService.Filters.Where(f => !f.Active))
+                    {
+                        <button @onclick="@(e => FilterService.ToggleFilter(filter))" type="button" class="btn btn-warning filter-btn">@filter.Name <i class="fa-solid fa-plus"></i></button>
+                    }
                 </div>
             </div>
         </div>
+        @*This is just a placeholder so the bottom of the accordion is complete*@
+        <div class="card"></div>
     </div>
-}
+
+    <VendorList/>
+
+</div>
 
 @code {
+
     private bool filtersOpen = false;
 
     private void ToggleFiltersTray() => filtersOpen = !filtersOpen;

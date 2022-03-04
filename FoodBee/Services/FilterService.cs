@@ -34,33 +34,33 @@ namespace FoodBee.Services
                 },
                 new Filter
                 {
-                    Name = "Events",
+                    Name = "No Allergens",
                     Active = false,
-                    IconSelector = "fa-calendar"
-                },
-                new Filter
-                {
-                    Name = "Info",
-                    Active = false,
-                    IconSelector = "fa-circle-info"
-                },
-                new Filter
-                {
-                    Name = "Help",
-                    Active = false,
-                    IconSelector = "fa-circle-question"
-                },
-                new Filter
-                {
-                    Name = "Favourites",
-                    Active = false,
-                    IconSelector = "fa-heart"
+                    IconSelector = "fa-shrimp"
                 },
                 new Filter
                 {
                     Name = "Water",
                     Active = false,
                     IconSelector = "fa-faucet"
+                },
+                new Filter
+                {
+                    Name = "Events",
+                    Active = false,
+                    IconSelector = "fa-calendar"
+                },
+                new Filter
+                {
+                    Name = "Tickets",
+                    Active = false,
+                    IconSelector = "fa-ticket"
+                },
+                new Filter
+                {
+                    Name = "Lounges",
+                    Active = false,
+                    IconSelector = "fa-couch"
                 },
                 new Filter
                 {
