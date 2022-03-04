@@ -6,49 +6,107 @@
             <button onclick="window.history.go(-1);" type="button" class="btn btn-outline-dark"><i class="fa-solid fa-angle-left"></i></button>
         </NavLink>
         <div style="margin-left: 10px; flex: 1;">
-            <h3>Product Name</h3>
+            <h3>Product</h3>
         </div>
-        <button @onclick="ToggleBoookmark" type="button" class="btn btn-light"><i class="@MarkedCSS fa-2x fa-bookmark"></i></button>
+        @*<button style="margin-bottom: 5px" @onclick="ToggleBoookmark" type="button" class="btn btn-warning btn-lg"><i class="@MarkedCSS fa-bookmark"></i></button>*@
     </div>
 
     <div class="card">
-        <div class="row">
-            <div class="col">
-                <img src="https://via.placeholder.com/180x120.png" class="img-fluid rounded-start" alt="...">
+        <img src="https://hgtvhome.sndimg.com/content/dam/images/hgtv/fullset/2013/6/25/0/Original_Kristin-Guy-grilled-mexican-corn-beauty-3_s4x3.jpg.rend.hgtvcom.616.462.suffix/1400978586356.jpeg" class="img-fluid rounded-start" alt="...">
+        <div class="card-body">
+            <div class="card-title">
+                <h5>Elotes <span style="float:right"><i class="fa-solid fa-coins"></i>      4</span></h5>
             </div>
-            <div class="col">
-                <div class="p-3">
-                    <h5>Dietary Info</h5>
-                    <span class="fa-stack" data-toggle="tooltip" data-original-title="Gluten Free">
-                        <i class="fa-solid fa-bread-slice fa-stack-1x"></i>
-                        <i class="fa-solid fa-ban fa-stack-2x" style="color:Tomato"></i>
-                    </span>
+            <p class="card-text">A classic mexican street food made with a fresh grilled cob of corn topped with spices, lime and Cotija cheese</p>
+
+            <div class="card-text text-muted">
+                Dietary Information 
+                <button style="background: transparent;border: none;" type="button" class="btn btn-light" data-toggle="modal" data-target="#dietaryModal">
+                    <i class="fa-solid fa-circle-info"></i>
+                </button>
+            </div>
+
+                <span class="diet-icon vegan">V</span>
+                <span class="diet-icon vegetarian">VG</span>
+                <span class="fa-stack" style="margin-bottom: 5px">
+                    <i style="color: cornflowerblue" class="fa-solid fa-circle fa-stack-2x"></i>
+                    <i class="fa-solid fa-ice-cream fa-stack-1x fa-inverse"></i>
+                </span>
+                <img style="margin-bottom: 5px" src="https://cdn.discordapp.com/attachments/930235478324699181/948277092561354832/nut.png" height="32" width="32"/>
+         
+            <hr />
+            <div>
+                <div class="text-muted" style="margin-bottom:10px;"><i class="fa-solid fa-store"></i> Meriam's Mexican Stand - Booth 31</div>
                 
-                    <span class="fa-stack">
-                        <i class="fa-solid fa-circle fa-stack-2x"></i>
-                        <i class="fa-solid fa-seedling fa-stack-1x fa-inverse"></i>
-                    </span>
-                    <span class="fa-stack">
-                    <i class="fa-solid fa-ice-cream fa-stack-1x"></i>
-                    <i class="fa-solid fa-ban fa-stack-2x" style="color:Tomato"></i>
-                    </span>
-                </div>
-            </div>
-        </div>
-            <div class="row">
-            <div class="col-md-8">
-                <div class="card-body">
-                <h5 class="card-title">Card title</h5>
-                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
-                </div>
+                <a class="btn btn-primary btn-block" href="/" role="button"><i class="fa-solid fa-map-pin"></i> Go To Booth</a>
+                <a class="btn btn-secondary btn-block" href="vendor" role="button"><i class="fa-solid fa-basket-shopping"></i> View Vendor</a>
             </div>
         </div>
     </div>
 
+
 </div>
 
+<!-- Modal -->
+<div class="modal fade" id="dietaryModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Dietary Legend</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                </div>
+            <div class="modal-body">
+                <ul>
+                    <li><span class="diet-icon vegan">V</span> the item is vegan</li>
+                    <li><span class="diet-icon vegetarian">VG</span> the item is vegetarian</li>
+                    <li><span class="diet-icon gluten-free">GF</span> the item is gluten friendly</li>
+                    <li><span class="diet-icon halal">HF</span> the item is halal friendly</li>
+                    <li><img style="margin-left: 4px;" src="https://cdn.discordapp.com/attachments/930235478324699181/948277092561354832/nut.png" height="32" width="32"/> the item is peanut free</li>
+                    <li>
+                        <span class="fa-stack">
+                            <i style="color: teal" class="fa-solid fa-circle fa-stack-2x"></i>
+                            <i class="fa-solid fa-fish fa-stack-1x fa-inverse"></i>
+                        </span>
+                         the item contains fish
+                   </li>
+                   <li>
+                        <span class="fa-stack">
+                            <i style="color: cornflowerblue" class="fa-solid fa-circle fa-stack-2x"></i>
+                            <i class="fa-solid fa-ice-cream fa-stack-1x fa-inverse"></i>
+                        </span>
+                         the item contains dairy
+                   </li>
+
+                   <li>
+                        <span class="fa-stack">
+                            <i style="color: orangered" class="fa-solid fa-circle fa-stack-2x"></i>
+                            <i class="fa-solid fa-egg fa-stack-1x fa-inverse"></i>
+                        </span>
+                         the item contains eggs
+                   </li>
+
+                   <li>
+                        <span class="fa-stack">
+                            <i style="color: darkgoldenrod" class="fa-solid fa-circle fa-stack-2x"></i>
+                            <i class="fa-solid fa-martini-glass fa-stack-1x fa-inverse"></i>
+                        </span>
+                         the item contains alcohol
+                   </li>
+
+                </ul>
+            </div>
+            <div class="modal-footer">
+                We are not responsible for allergic reactions
+            </div>
+        </div>
+    </div>
+</div>
+
+
 @code {
+
     private bool Marked = false;
 
     private string MarkedCSS => Marked ? "fa-solid" : "fa-regular";

@@ -2,7 +2,7 @@
 @using FoodBee.Models
 @using FoodBee.Services
 
-<div class="map @MapCssClass"></div>
+<div class="map @MapFilterCssClass @MapCssClass"></div>
 
 <div class="title @TitleCssClass">
     <div class="title-sub">
@@ -20,7 +20,8 @@
     <div class="menu-container">
         <div style="visibility: hidden"><span class="menu-icon">1</span></div>
         <div style="visibility: hidden"><span class="menu-icon">2</span></div>
- 
+        @*<div style="visibility: hidden"><span class="menu-icon">2</span></div>*@
+
       
         <span class="hex-wrap">
             @* Search/clear filters hex *@
@@ -89,7 +90,7 @@
                 }
             </div>
         </span>
-
+       
         @*Remainging fitler hex buttons *@
         @for (int i = 2; i < FilterService.Filters.Count(); i++)
         {
@@ -107,15 +108,13 @@
 </div>
 
 @*Shortcut to list saved products*@
-@*<button type="button" class="btn btn-warning btn-rounded btn-lg map-list-btn"><i class="fa-solid fa-bookmark"></i></button>*@
-
-@*@if (FilterService.NumActive() > 0 && collapseMenu)
+@if (collapseMenu)
 {
-    <div class="btn-group map-list-btn" role="group" aria-label="Basic example">
-        <button type="button" class="btn btn-info active">Map</button>
-        <button type="button" class="btn btn-info">List</button>
+    <div class="bottom-right">
+        <a role="button" class="btn btn-warning btn-rounded btn-lg aux-btn" href="saved-vendors"><i class="fa-solid fa-bookmark"></i></a>
+        <a role="button" class="btn btn-warning btn-rounded btn-lg aux-btn" href="help"><i class="fa-solid fa-question"></i></a>
     </div>   
-}*@
+}
 
 @code {
 
@@ -138,6 +137,7 @@
     private string ActiveCssClass(int i) => FilterService.Filters[i].Active ? "active-filter" : null;
     private string MenuCssClass => collapseMenu ? "hide-menu" : null;
     private string TitleCssClass => collapseMenu ? null : "hide-menu";
+    private string MapFilterCssClass => FilterService.NumActive() > 0 ? "map-" + ((FilterService.NumActive()+1) % 3) : "map-0";
     private string MapCssClass => collapseMenu ? null : "blur-map";
     private string ConfirmBtn => collapseMenu ? null : "background-color: #8bc34a;";
     private string ClearBtn => collapseMenu ? null : "background-color: #ff5722;";

@@ -2,12 +2,22 @@
     z-index: 0;
     min-height: 100vh;
     width: 100%;
-    background-image: url("Images/map.png");
     background-attachment: fixed;
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;
-    -webkit-filter: brightness(85%);
+}
+
+.map-0 {
+    background-image: url("Images/map-f0.png");
+}
+
+.map-1 {
+    background-image: url("Images/map-f1.png");
+}
+
+.map-2 {
+    background-image: url("Images/map-f2.png");
 }
 
 .blur-map {
@@ -27,15 +37,15 @@
     /*border: 4px solid goldenrod;*/
     font-size: 32px;
     filter: drop-shadow(-1px 6px 3px rgba(50, 50, 0, 0.5));
-    background-color: darkgoldenrod;
+    background-color: goldenrod;
     padding: 0px 25px;
     border-radius: 16px;
-    margin: 2px -15px;
+    margin: 2px -10px;
 }
 
 .title-sub {
     /*border: 2px solid darkgoldenrod;*/
-    background-color: goldenrod;
+    background-color: #ffc107;
     filter: drop-shadow(-1px 6px 3px rgba(50, 50, 0, 0.5));
     border-radius: 8px;
     padding: 1px 20px;
@@ -44,13 +54,13 @@
 
 /* Hex flex grid layout adapted from https://css-tricks.com/hexagons-and-beyond-flexible-responsive-grid-patterns-sans-media-queries/*/
 .menu {
-    right: -47px;
+    right: -35px;
     z-index: 2;
     position: fixed;
     top: 0px;
-    width: 420px;
+    width: 400px;
     display: flex;
-    --s: 98px; /* size  */
+    --s: 96px; /* size  */
     --m: 4px; /* margin */
     --f: calc(1.732 * var(--s) + 4 * var(--m) - 1px);
 }
@@ -81,7 +91,7 @@
     display: inline-block;
     font-size: initial;
     clip-path: polygon(0% 25%, 0% 75%, 50% 100%, 100% 75%, 100% 25%, 50% 0%);
-    background: goldenrod;
+    background: #ffc107;
     outline: 2px solid goldenrod;
     margin-bottom: calc(var(--m) - var(--s)*0.2885);
 }
@@ -147,18 +157,25 @@
 }
 
 .active-filter {
-    background: #a37507 !important;
+    background: darkgoldenrod !important;
 }
 
 .confirm {
     background: #8bc34a;
 }
-.map-list-btn {
+.bottom-right {
     position: fixed;
-    right: 20px;
-    bottom: 40px;
+    right: 10px;
+    bottom: 60px;
+    display: flex;
+    flex-direction: column;
 }
 
 .btn.btn-rounded {
     border-radius: 50px !important;
+}
+
+.aux-btn {
+    margin: 5px;
+    filter: drop-shadow(-1px 6px 3px rgba(50, 50, 0, 0.5));
 }

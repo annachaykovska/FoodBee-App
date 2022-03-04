@@ -1,31 +1,31 @@
 ﻿@page "/vendor"
 
 <div class="container">
-    <div class="input-group">
+    <div class="input-group" style="margin-bottom: 10px">
         <NavLink href="/">
             <button onclick="window.history.go(-1);" type="button" class="btn btn-outline-dark"><i class="fa-solid fa-angle-left"></i></button>
         </NavLink>
         <div style="margin-left: 10px; flex: 1;">
-            <h3>Vendor Name</h3>
+            <h3>Vendor</h3>
         </div>
+        <button @onclick="ToggleBoookmark" type="button" class="btn btn-warning btn-lg"><i class="@MarkedCSS fa-bookmark"></i></button>
     </div>
-
     <div class="card">
-        <img src="https://via.placeholder.com/400x200.png" class="img-fluid rounded-start" alt="...">
+        <img src="https://cdn.discordapp.com/attachments/930235478324699181/949037699875078144/unknown.png" class="img-fluid rounded-start" alt="...">
         <div class="card-body">
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        <p>Some information abouot the vendor and their mission, products, etc.</p>
+            <h4 class="card-title">Ctrl+Malt+Del Brewery</h4>
+            <p class="card-text">Providing full coverage in the beer market since the epoch.</p>
         </div>
-        <h5 class="card-title" style="margin-left: 10px;">Products</h5>
+        <span class="text-muted" style="margin-left: 20px;">Our Offerings</span>
         <ul class="list-group list-group-flush">
-            @for (int i = 0; i < 5; i++)
+            @foreach (string p in products)
             {
-                <li class="list-group-item"><a href="product" style="display: inline-block; width: 100%">Product #@i<i class="fa-solid fa-angle-right" style="float: right"></i></a></li>
+                <li class="list-group-item"><a href="product" style="display: inline-block; width: 100%">@p<i class="fa-solid fa-angle-right" style="float: right"></i></a></li>
             }
         </ul>
         <div class="card-body">
-            <button type="button" class="btn btn-primary btn-lg btn-block"><i class="fa-solid fa-map-pin"></i> Booth Location</button>
-            <button type="button" class="btn btn-secondary btn-lg btn-block"><i class="fa-solid fa-basket-shopping"></i> Where to Buy</button>
+            <div class="text-muted" style="margin-bottom: 10px"><i class="fa-solid fa-store"></i> Booth 31</div>
+            <a class="btn btn-primary btn-block" href="/" role="button"><i class="fa-solid fa-map-pin"></i> Go To Booth</a>
         </div>
     </div>
 
@@ -33,5 +33,21 @@
 
 
 @code {
+    //PlaceholderContext products for prototype
+    private string[] products =
+    {
+        "Rubber Duck Debigging Ale",
+        "SSH Saison",
+        "Keyboard Kolsch",
+        "LAN Lager",
+        "Password Protection Pilsner"
+    };
+
+
+    private bool Marked = false;
+
+    private string MarkedCSS => Marked ? "fa-solid" : "fa-regular";
+
+    private void ToggleBoookmark() => Marked = !Marked;   
 
 }
