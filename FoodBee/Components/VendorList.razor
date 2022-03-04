@@ -3,16 +3,15 @@
 @*Display vendors*@
 @foreach (Vendor v in Vendors)
 {
-    <a class="card mb-3" style="margin: 5px; text-decoration: none; color: initial" href="vendor">
+    <a class="card" style="margin: 5px; text-decoration: none; color: initial; height: 93px" href="vendor">
         <div class="row g-0">
-            <div class="col-sm-2">
-                <img src="@v.ImageUrl" class="img-fluid rounded-start" alt="...">
+            <div class="col-4">
+                <img src="@v.ImageUrl" class="img-fluid rounded-start" style="max-height: 93p; border-radius: 4px" alt="@v.Name">
             </div>
-            <div class="col-sm-10">
-                <div class="card-body">
-                    <h5 class="card-title">@v.Name</h5>
-                    <p class="card-text">@v.Description</p>
-                </div>
+            <div class="col-8 p-1">
+                <strong class="card-title">@v.Name</strong><br/>
+                <span>@v.Description</span><br/>
+                <span class="text-muted"><i class="fa-solid fa-store"></i> Booth @v.Booth</span>
             </div>
         </div>
     </a>
@@ -24,36 +23,36 @@
         new Vendor
         {
             Name = "Daniel's Desserts",
-            Description = "We have everything from cakes to mini cupcakes. You’ll always wish you bought more",
-            ImageUrl = "...",
+            Description = "Cakes, cupcakes, and more",
+            ImageUrl = "Images/Vendor/dd.png",
             Booth = 70
         },
         new Vendor
         {
             Name = "Anna's Appetizers",
-            Description = "",
-            ImageUrl = "",
+            Description = "Small bites, large excites",
+            ImageUrl = "Images/Vendor/aa.png",
             Booth = 24
         },
         new Vendor
         {
             Name = "Meriam's Mexican Stand",
-            Description = "",
-            ImageUrl = "",
+            Description = "Fresh mexican quisine",
+            ImageUrl = "Images/Vendor/mm.png",
             Booth = 31
         },
         new Vendor
         {
             Name = "Ben's Burgers",
-            Description = "",
-            ImageUrl = "",
+            Description = "Greasy easy grub",
+            ImageUrl = "Images/Vendor/bb.png",
             Booth = 3
         },
         new Vendor
         {
             Name = "Ctrl+Malt+Del",
-            Description = "Providing full coverage in the beer market since the epoch.",
-            ImageUrl = "https://cdn.discordapp.com/attachments/930235478324699181/949037699875078144/unknown.png",
+            Description = "Beers and good times",
+            ImageUrl = "Images/Vendor/ctrl+malt+del.png",
             Booth = 12
         }
     };
