@@ -6,7 +6,7 @@
 <div class="container">
 
     @*Top search/filter bar*@
-    <div class="input-group">
+    <div class="input-group" style="margin-bottom: 5px">
         <button onclick="window.history.go(-1);" type="button" class="btn btn-outline-dark"><i class="fa-solid fa-angle-left"></i></button>
         <input style="margin: 0 5px;" type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
 
@@ -20,6 +20,17 @@
                 <a class="dropdown-item">Newest</a>
             </div>
         </div>
+
+        <div class="dropdown" style="margin-left: 5px;">
+            <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
+                <i class="fa-solid fa-map-location-dot"></i>
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item">Show Products</a>
+                <a class="dropdown-item active">Show Locations</a>
+            </div>
+        </div>
+
     </div>
     @*Filters accordion*@
     <div class="accordion" id="accordionExample">
@@ -63,4 +74,6 @@
 
     private void ToggleFiltersTray() => filtersOpen = !filtersOpen;
     private string RotateIconClass => filtersOpen ? "fa-rotate-180" : null;
+
+    private bool ShowVendors = false;
 }
