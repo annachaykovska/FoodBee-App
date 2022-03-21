@@ -1,0 +1,62 @@
+[
+  {
+    "name": "Daniel's Desserts",
+    "description": "Sweet treats to satisfy the sweet tooth in all of us",
+    "booth": 1,
+    "imageUrl": "Images/Vendor/daniels_desserts.png"
+  },
+  {
+    "name": "Anna's Appetizers",
+    "description": "Small, hand-held foods perfect for the on go hustle and bustle of conventions",
+    "booth": 3,
+    "imageUrl": "Images/Vendor/annas_appetizers.png"
+  },
+  {
+    "name": "Meriam's Mexican Stand",
+    "description": "Traditional and well-known Mexican food",
+    "booth": 6,
+    "imageUrl": "Images/Vendor/meriams_mexican_stand.png"
+  },
+  {
+    "name": "Ben's Burgers",
+    "description": "A classic food dive for those afternoon hunger pangs",
+    "booth": 25,
+    "imageUrl": "Images/Vendor/bens_burgers.png"
+  },
+  {
+    "name": "Ctrl+MALT+Del",
+    "description": "Local brewery bringing the joys of computer programming to you in the form of bright and malty tastes",
+    "booth": 26,
+    "imageUrl": "Images/Vendor/ctrl_malt_del.png"
+  },
+  {
+    "name": "Anay's Aggressive Arugula",
+    "description": "Fresh and crisp salads filled with yummy toppings",
+    "booth": 57,
+    "imageUrl": "Images/Vendor/anays_aggressive_arugula.png"
+  },
+  {
+    "name": "Cheese by Chris",
+    "description": "Cheese-based snacks and foods for those cheese-lovers out there",
+    "booth": 36,
+    "imageUrl": "Images/Vendor/cheese_by_chris.png"
+  },
+  {
+    "name": "Espresso Ehud",
+    "description": "The perfect mobile cafe experience brought to you by the beloved local roastery",
+    "booth": 24,
+    "imageUrl": "Images/Vendor/espresso_ehud.png"
+  },
+  {
+    "name": "HCI Hot Ones",
+    "description": "A curated selection of hot sauces as seen on Hot Ones",
+    "booth": 17,
+    "imageUrl": "Images/Vendor/hci_hot_ones.png"
+  },
+  {
+    "name": "Dill Design Methods",
+    "description": "A quick crunchy snack to put a pep in your step",
+    "booth": 42,
+    "imageUrl": "Images/Vendor/dill_design_methods.png"
+  }
+]

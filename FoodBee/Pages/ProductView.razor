@@ -1,4 +1,6 @@
-﻿@page "/product"
+﻿@page "/product/{name}"
+@inject HttpClient http
+@using FoodBee.Models
 
 <div class="container">
     <div class="input-group">
@@ -11,38 +13,43 @@
         <button style="margin-bottom: 5px" @onclick="ToggleBoookmark" type="button" class="btn btn-warning btn-lg"><i class="@MarkedCSS fa-bookmark"></i></button>
     </div>
 
-    <div class="card">
-        <img src="https://hgtvhome.sndimg.com/content/dam/images/hgtv/fullset/2013/6/25/0/Original_Kristin-Guy-grilled-mexican-corn-beauty-3_s4x3.jpg.rend.hgtvcom.616.462.suffix/1400978586356.jpeg" class="img-fluid rounded-start" alt="...">
-        <div class="card-body">
-            <div class="card-title">
-                <h5>Elotes <span style="float:right"><i class="fa-solid fa-coins"></i>      4</span></h5>
-            </div>
-            <p class="card-text">A classic mexican street food made with a fresh grilled cob of corn topped with spices, lime and Cotija cheese</p>
+    @if (product != null)
+    {
 
-            <div class="card-text text-muted">
-                Dietary Information 
-                <button style="background: transparent;border: none;" type="button" class="btn btn-light" data-toggle="modal" data-target="#dietaryModal">
-                    <i class="fa-solid fa-circle-info"></i>
-                </button>
-            </div>
 
-                <span class="diet-icon vegan">V</span>
-                <span class="diet-icon vegetarian">VG</span>
-                <span class="fa-stack" style="margin-bottom: 5px">
-                    <i style="color: cornflowerblue" class="fa-solid fa-circle fa-stack-2x"></i>
-                    <i class="fa-solid fa-ice-cream fa-stack-1x fa-inverse"></i>
-                </span>
-                <img style="margin-bottom: 5px" src="https://cdn.discordapp.com/attachments/930235478324699181/948277092561354832/nut.png" height="32" width="32"/>
+        <div class="card">
+            <img src="@product.ImageUrl" class="img-fluid rounded-start" alt="...">
+            <div class="card-body">
+                <div class="card-title">
+                    <h5>@product.Name <span style="float:right"><i class="fa-solid fa-coins"></i>      @product.Price</span></h5>
+                </div>
+                <p class="card-text">@product.Description</p>
+
+                <div class="card-text text-muted">
+                    Dietary Information 
+                    <button style="background: transparent;border: none;" type="button" class="btn btn-light" data-toggle="modal" data-target="#dietaryModal">
+                        <i class="fa-solid fa-circle-info"></i>
+                    </button>
+                </div>
+
+                    <span class="diet-icon vegan">V</span>
+                    <span class="diet-icon vegetarian">VG</span>
+                    <span class="fa-stack" style="margin-bottom: 5px">
+                        <i style="color: cornflowerblue" class="fa-solid fa-circle fa-stack-2x"></i>
+                        <i class="fa-solid fa-ice-cream fa-stack-1x fa-inverse"></i>
+                    </span>
+                    <img style="margin-bottom: 5px" src="https://cdn.discordapp.com/attachments/930235478324699181/948277092561354832/nut.png" height="32" width="32"/>
          
-            <hr />
-            <div>
-                <div class="text-muted" style="margin-bottom:10px;"><i class="fa-solid fa-store"></i> Meriam's Mexican Stand - Booth 31</div>
+                <hr />
+                <div>
+                    <div class="text-muted" style="margin-bottom:10px;"><i class="fa-solid fa-store"></i> @product.Vendor - Booth 31</div>
                 
-                <a class="btn btn-primary btn-block" href="/" role="button"><i class="fa-solid fa-map-pin"></i> Go To Booth</a>
-                <a class="btn btn-secondary btn-block" href="vendor" role="button"><i class="fa-solid fa-basket-shopping"></i> View Vendor</a>
+                    <a class="btn btn-primary btn-block" href="/" role="button"><i class="fa-solid fa-map-pin"></i> Go To Booth</a>
+                    <a class="btn btn-secondary btn-block" href="vendor/@product.Vendor" role="button"><i class="fa-solid fa-basket-shopping"></i> View Vendor</a>
+                </div>
             </div>
         </div>
-    </div>
+    }
 
 
 </div>
@@ -106,6 +113,16 @@
 
 
 @code {
+
+    [Parameter]
+    public string Name { get; set; }       // The name of the vendor we are to show
+    private Product product;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Product[] products = await http.GetFromJsonAsync<Product[]>("data/products.json");
+        product = products.Where(p => p.Name == Name).First();
+    }
 
     private bool Marked = false;
 

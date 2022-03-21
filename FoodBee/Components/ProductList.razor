@@ -1,22 +1,35 @@
 ﻿@using FoodBee.Models
+@using FoodBee.Services
+@inject HttpClient http
 
 @*Display vendors*@
-@*@foreach (Vendor v in Vendors)
+
+@if (products != null)
 {
-    <a class="card" style="margin: 5px; text-decoration: none; color: initial; height: 93px" href="vendor">
-        <div class="row g-0">
-            <div class="col-4">
-                <img src="@v.ImageUrl" class="img-fluid rounded-start" style="max-height: 93p; border-radius: 4px" alt="@v.Name">
+
+    @foreach (Product p in products)
+    {
+        <a class="card" style="margin: 5px 0px; text-decoration: none; color: initial; height: 100px" href="product/@p.Name">
+            <div class="row g-0">
+                <div class="col-4">
+                    <img src="@p.ImageUrl" class="img-fluid rounded-start" style="max-height: 100px; border-radius: 4px" alt="@p.Name">
+                </div>
+                <div class="col-8">
+                    <strong class="card-title">@p.Name</strong><br/>
+                    <span class="text-muted"><i class="fa-solid fa-store"></i> @p.Vendor </span><br/>
+                    <small>@p.Description.Substring(0, Math.Min(p.Description.Length, 40))...</small><br/>
+                </div>
             </div>
-            <div class="col-8 p-1">
-                <strong class="card-title">@v.Name</strong><br/>
-                <span>@v.Description</span><br/>
-                <span class="text-muted"><i class="fa-solid fa-store"></i> Booth @v.Booth</span>
-            </div>
-        </div>
-    </a>
+        </a>
+    }
 }
-*@
+
 @code {
+    private Product[] products;
+
+    protected override async Task OnInitializedAsync()
+    {
+        products = await http.GetFromJsonAsync<Product[]>("data/products.json");
+    }
 
 }
