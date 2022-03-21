@@ -1,60 +1,37 @@
 ﻿@using FoodBee.Models
+@using FoodBee.Services
+@inject HttpClient http
 
 @*Display vendors*@
-@foreach (Vendor v in Vendors)
+
+@if (vendors != null)
 {
-    <a class="card" style="margin: 5px; text-decoration: none; color: initial; height: 93px" href="vendor">
-        <div class="row g-0">
-            <div class="col-4">
-                <img src="@v.ImageUrl" class="img-fluid rounded-start" style="max-height: 93p; border-radius: 4px" alt="@v.Name">
+    @foreach (Vendor v in vendors)
+    {
+        <a class="card" style="margin: 5px; text-decoration: none; color: initial; height: 93px" href="vendor">
+            <div class="row g-0">
+                <div class="col-4">
+                    <img src="@GetImageUrl(v)" class="img-fluid rounded-start" style="max-height: 93px; border-radius: 4px" alt="@v.Name">
+                </div>
+                <div class="col-8 p-1">
+                    <strong class="card-title">@v.Name</strong><br/>
+                    <span>@v.Description</span><br/>
+                    <span class="text-muted"><i class="fa-solid fa-store"></i> Booth @v.Booth</span>
+                </div>
             </div>
-            <div class="col-8 p-1">
-                <strong class="card-title">@v.Name</strong><br/>
-                <span>@v.Description</span><br/>
-                <span class="text-muted"><i class="fa-solid fa-store"></i> Booth @v.Booth</span>
-            </div>
-        </div>
-    </a>
+        </a>
+    }
 }
 
 @code {
-    public List<Vendor> Vendors = new List<Vendor>()
+
+    private Vendor[] vendors;
+
+    protected override async Task OnInitializedAsync()
     {
-        new Vendor
-        {
-            Name = "Daniel's Desserts",
-            Description = "Cakes, cupcakes, and more",
-            ImageUrl = "Images/Vendor/dd.png",
-            Booth = 70
-        },
-        new Vendor
-        {
-            Name = "Anna's Appetizers",
-            Description = "Small bites, large excites",
-            ImageUrl = "Images/Vendor/aa.png",
-            Booth = 24
-        },
-        new Vendor
-        {
-            Name = "Meriam's Mexican Stand",
-            Description = "Fresh mexican quisine",
-            ImageUrl = "Images/Vendor/mm.png",
-            Booth = 31
-        },
-        new Vendor
-        {
-            Name = "Ben's Burgers",
-            Description = "Greasy easy grub",
-            ImageUrl = "Images/Vendor/bb.png",
-            Booth = 3
-        },
-        new Vendor
-        {
-            Name = "Ctrl+Malt+Del",
-            Description = "Beers and good times",
-            ImageUrl = "Images/Vendor/ctrl+malt+del.png",
-            Booth = 12
-        }
-    };
+        vendors = await http.GetFromJsonAsync<Vendor[]>("data/vendors.json");
+    }
+
+    private string GetImageUrl(Vendor vendor) => vendor.ImageUrl ?? "Images/Vendor/" + vendor.Name + ".png";
 
 }

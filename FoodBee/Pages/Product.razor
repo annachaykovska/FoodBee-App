@@ -1,4 +1,4 @@
-﻿@page "/product"
+﻿@page "/product/{name}"
 
 <div class="container">
     <div class="input-group">
@@ -106,6 +106,9 @@
 
 
 @code {
+
+    [Parameter]
+    public string Name { get; set; }
 
     private bool Marked = false;
 

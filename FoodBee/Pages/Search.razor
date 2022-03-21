@@ -64,7 +64,13 @@
         <div class="card"></div>
     </div>
 
-    <VendorList/>
+    @if (ShowVendors)
+    {
+        <VendorList/>
+    } else
+    {
+        <ProductList/>   
+    }
 
 </div>
 
