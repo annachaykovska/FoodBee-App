@@ -1,0 +1,66 @@
+﻿@page "/vendor/{name}"
+@using FoodBee.Models
+@inject HttpClient http
+
+<div class="container">
+    <div class="input-group" style="margin-bottom: 10px">
+        <NavLink href="/">
+            <button onclick="window.history.go(-1);" type="button" class="btn btn-outline-dark"><i class="fa-solid fa-angle-left"></i></button>
+        </NavLink>
+        <div style="margin-left: 10px; flex: 1;">
+            <h3>Vendor</h3>
+        </div>
+        <button @onclick="ToggleBoookmark" type="button" class="btn btn-warning btn-lg"><i class="@MarkedCSS fa-bookmark"></i></button>
+    </div>
+
+    @if (vendor != null)
+    {
+        <div class="card">
+            <img src="@vendor.ImageUrl" class="img-fluid rounded-start" alt="...">
+            <div class="card-body">
+                <h4 class="card-title">@vendor.Name</h4>
+                <p class="card-text">@vendor.Description</p>
+            </div>
+            <span class="text-muted" style="margin-left: 20px;">Our Offerings</span>
+           @if (vendorProducts != null)
+            {
+                <ul class="list-group list-group-flush">
+                    @foreach (Product p in vendorProducts)
+                    {
+                        <li class="list-group-item"><a href="product/@p.Name" style="display: inline-block; width: 100%">@p.Name<i class="fa-solid fa-angle-right" style="float: right"></i></a></li>
+                    }
+                </ul>
+            }
+            <div class="card-body">
+                <div class="text-muted" style="margin-bottom: 10px"><i class="fa-solid fa-store"></i> Booth @vendor.Booth</div>
+                <a class="btn btn-primary btn-block" href="/" role="button"><i class="fa-solid fa-map-pin"></i> Go To Booth</a>
+            </div>
+        </div>
+    }
+
+</div>
+
+
+@code {
+    [Parameter]
+    public string Name { get; set; }
+
+    private Vendor vendor;
+    private Product[] vendorProducts;
+
+    protected override async Task OnInitializedAsync()
+    {
+        Vendor[] vendors = await http.GetFromJsonAsync<Vendor[]>("data/vendors.json");
+        vendor = vendors.Where(v => v.Name == Name).First();
+
+        Product[] products = await http.GetFromJsonAsync<Product[]>("data/products.json");
+        vendorProducts = products.Where(p => p.Vendor == Name).ToArray();
+    }
+
+    private bool Marked = false;
+
+    private string MarkedCSS => Marked ? "fa-solid" : "fa-regular";
+
+    private void ToggleBoookmark() => Marked = !Marked;   
+
+}

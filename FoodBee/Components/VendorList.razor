@@ -8,15 +8,15 @@
 {
     @foreach (Vendor v in vendors)
     {
-        <a class="card" style="margin: 5px; text-decoration: none; color: initial; height: 93px" href="vendor">
+        <a class="card" style="margin: 5px 0px; text-decoration: none; color: initial; height: 100px" href="vendor/@v.Name">
             <div class="row g-0">
                 <div class="col-4">
-                    <img src="@GetImageUrl(v)" class="img-fluid rounded-start" style="max-height: 93px; border-radius: 4px" alt="@v.Name">
+                    <img src="@v.ImageUrl" class="img-fluid rounded-start" style="max-height: 100px; border-radius: 4px" alt="@v.Name">
                 </div>
-                <div class="col-8 p-1">
+                <div class="col-8">
                     <strong class="card-title">@v.Name</strong><br/>
-                    <span>@v.Description</span><br/>
-                    <span class="text-muted"><i class="fa-solid fa-store"></i> Booth @v.Booth</span>
+                    <span class="text-muted"><i class="fa-solid fa-store"></i> Booth @v.Booth</span><br/>
+                    <small>@v.Description</small><br/>
                 </div>
             </div>
         </a>
@@ -31,7 +31,5 @@
     {
         vendors = await http.GetFromJsonAsync<Vendor[]>("data/vendors.json");
     }
-
-    private string GetImageUrl(Vendor vendor) => vendor.ImageUrl ?? "Images/Vendor/" + vendor.Name + ".png";
 
 }

@@ -9,10 +9,10 @@
 
     @foreach (Product p in products)
     {
-        <a class="card" style="margin: 5px 0px; text-decoration: none; color: initial; height: 100px" href="vendor">
+        <a class="card" style="margin: 5px 0px; text-decoration: none; color: initial; height: 100px" href="product/@p.Name">
             <div class="row g-0">
                 <div class="col-4">
-                    <img src="@GetImageUrl(p)" class="img-fluid rounded-start" style="max-height: 100px; border-radius: 4px" alt="@p.Name">
+                    <img src="@p.ImageUrl" class="img-fluid rounded-start" style="max-height: 100px; border-radius: 4px" alt="@p.Name">
                 </div>
                 <div class="col-8">
                     <strong class="card-title">@p.Name</strong><br/>
@@ -31,8 +31,5 @@
     {
         products = await http.GetFromJsonAsync<Product[]>("data/products.json");
     }
-
-    private string GetImageUrl(Product product) => product.ImageUrl ?? "Images/Products/" + product.Name + ".png";
-
 
 }
