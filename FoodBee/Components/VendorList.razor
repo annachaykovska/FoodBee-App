@@ -8,15 +8,15 @@
 {
     @foreach (Vendor v in vendors)
     {
-        <a class="card" style="margin: 5px 0px; text-decoration: none; color: initial; height: 100px" href="vendor/@v.Name">
+        <a class="card" style="margin: 5px 0px; text-decoration: none; color: initial; height: fit-content" href="vendor/@v.Name">
             <div class="row g-0">
                 <div class="col-4">
-                    <img src="@v.ImageUrl" class="img-fluid rounded-start" style="max-height: 100px; border-radius: 4px" alt="@v.Name">
+                    <img src="@v.ImageUrl" class="img-fluid rounded-start" style="border-radius: 4px; object-fit: fill" alt="@v.Name">
                 </div>
                 <div class="col-8">
                     <strong class="card-title">@v.Name</strong><br/>
                     <span class="text-muted"><i class="fa-solid fa-store"></i> Booth @v.Booth</span><br/>
-                    <small>@v.Description</small><br/>
+                    <small>@v.Description.Substring(0, Math.Min(v.Description.Length, 72))...</small><br/>
                 </div>
             </div>
         </a>
