@@ -9,15 +9,16 @@
 
     @foreach (Product p in products)
     {
-        <a class="card" style="margin: 5px 0px; text-decoration: none; color: initial; height: 100px" href="product/@p.Name">
+        <a class="card" style="margin: 5px 0px; text-decoration: none; color: initial; height: 6em" href="product/@p.Name">
             <div class="row g-0">
                 <div class="col-4">
-                    <img src="@p.ImageUrl" class="img-fluid rounded-start" style="max-height: 100px; border-radius: 4px" alt="@p.Name">
+                    <div class="list-img" style="@productImg(p.ImageUrl)"></div>
+                    @*<img src="@p.ImageUrl" class="img-fluid rounded-start" style="max-height: 100px; border-radius: 4px" alt="@p.Name">*@
                 </div>
-                <div class="col-8">
+                <div class="col-8" style="padding-left: 0px">
                     <strong class="card-title">@p.Name</strong><br/>
                     <span class="text-muted"><i class="fa-solid fa-store"></i> @p.Vendor </span><br/>
-                    <small>@p.Description.Substring(0, Math.Min(p.Description.Length, 40))...</small><br/>
+                    <small>@p.Description.Substring(0, Math.Min(p.Description.Length, 72))...</small><br/>
                 </div>
             </div>
         </a>
@@ -31,5 +32,7 @@
     {
         products = await http.GetFromJsonAsync<Product[]>("data/products.json");
     }
+
+    private string productImg(string url) => "Background-image: url(" + url + ");";
 
 }

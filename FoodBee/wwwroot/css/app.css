@@ -58,3 +58,13 @@ a {
 .container {
     margin-top: 10px;
 }
+
+.list-img {
+    border-radius: 3px;
+    height: calc(6rem - 2px);
+    width: 100%;
+    background-position:center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow: hidden;
+}

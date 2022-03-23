@@ -26,8 +26,8 @@
                 <i class="fa-solid fa-map-location-dot"></i>
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item">Show Products</a>
-                <a class="dropdown-item active">Show Locations</a>
+                <a class="dropdown-item @ProductsActive" @onclick="(e => ShowVendors = false)">Show Products</a>
+                <a class="dropdown-item @VendorsActive" @onclick="(e => ShowVendors = true)">Show Locations</a>
             </div>
         </div>
 
@@ -81,5 +81,8 @@
     private void ToggleFiltersTray() => filtersOpen = !filtersOpen;
     private string RotateIconClass => filtersOpen ? "fa-rotate-180" : null;
 
-    private bool ShowVendors = true;
+    private string ProductsActive => ShowVendors ? null : "active";
+    private string VendorsActive => ShowVendors ? "active" : null;
+
+    private bool ShowVendors = false;
 }
