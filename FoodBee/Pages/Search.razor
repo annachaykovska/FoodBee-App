@@ -2,28 +2,29 @@
 @using FoodBee.Models
 @using FoodBee.Services
 @using FoodBee.Components
+@inject HttpClient http
 
 <div class="container">
 
     @*Top search/filter bar*@
     <div class="input-group" style="margin-bottom: 5px">
         <button onclick="window.history.go(-1);" type="button" class="btn btn-outline-dark"><i class="fa-solid fa-angle-left"></i></button>
-        <input style="margin: 0 5px;" type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+        <input @bind="QueryString" @bind:event="oninput" style="margin: 0 5px;" type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
 
         <div class="dropdown">
             <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
                 <i class="fa-solid fa-arrow-down-wide-short"></i>
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item">Cheapest</a>
-                <a class="dropdown-item active">Closest</a>
-                <a class="dropdown-item">Newest</a>
+                <a class="dropdown-item @ActiveSortClass(SortPredicate.Cheapest)" @onclick="(e => SortBy = SortPredicate.Cheapest)">Cheapest</a>
+                <a class="dropdown-item @ActiveSortClass(SortPredicate.Closest)" @onclick="(e => SortBy = SortPredicate.Closest)">Closest</a>
+                <a class="dropdown-item @ActiveSortClass(SortPredicate.Newest)" @onclick="(e => SortBy = SortPredicate.Newest)">Newest</a>
             </div>
         </div>
 
         <div class="dropdown" style="margin-left: 5px;">
             <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
-                <i class="fa-solid fa-map-location-dot"></i>
+                <i class="fa-solid @ShowingIcon"></i>
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item @ProductsActive" @onclick="(e => ShowVendors = false)">Show Products</a>
@@ -66,15 +67,21 @@
 
     @if (ShowVendors)
     {
-        <VendorList/>
+        <VendorList Vendors="@SearchVendors()"/>
     } else
     {
-        <ProductList/>   
+        <ProductList Products="@SearchProducts()"/>   
     }
 
 </div>
 
 @code {
+
+    private List<Product> allProducts { get; set; }
+    private List<Vendor> allVendors { get; set; }
+
+    private string QueryString { get; set; }
+    private SortPredicate SortBy { get; set; }
 
     private bool filtersOpen = false;
 
@@ -84,5 +91,70 @@
     private string ProductsActive => ShowVendors ? null : "active";
     private string VendorsActive => ShowVendors ? "active" : null;
 
+    private string ActiveSortClass(SortPredicate predicate) => predicate == SortBy ? "active" : null;
+
     private bool ShowVendors = false;
+    private string ShowingIcon => ShowVendors ? "fa-map-location-dot" : "fa-bag-shopping";
+
+    /// <summary>
+    /// Get the products and vendors asyncronously from http response
+    /// </summary>
+    protected override async Task OnInitializedAsync()
+    {
+        allProducts = (await http.GetFromJsonAsync<Product[]>("data/products.json")).ToList();
+        allVendors = (await http.GetFromJsonAsync<Vendor[]>("data/vendors.json")).ToList();
+    }
+
+    /// <returns>Return products that match the users search: filters, query string, and sort</returns>
+    private Product[] SearchProducts()
+    {
+        if (allProducts == null) return new Product[] { };
+
+        List<Product> filteredProducts = allProducts;
+
+        if (!string.IsNullOrEmpty(QueryString))
+        {
+            filteredProducts = filteredProducts.FindAll(p => p.Name.ToLower().Contains(QueryString.ToLower()) || p.Description.ToLower().Contains(QueryString.ToLower()));
+        }
+
+        // Sort the Products
+        filteredProducts.Sort((p1, p2) =>
+        {
+            if (SortBy.Equals(SortPredicate.Closest)) return allVendors.Find(v => v.Name == p1.Vendor).Booth.CompareTo(allVendors.Find(v => v.Name == p2.Vendor).Booth);    // Sort by booth asc
+            else if (SortBy.Equals(SortPredicate.Cheapest)) return p1.Price.CompareTo(p2.Price);        // Sort by price asc                                                                                
+            else return 0;      // default (newest - we dont really have a way of finding this) 
+        });
+        return filteredProducts.ToArray();
+    }
+
+    /// <returns>Return vendors that match the users search: filters, query string, and sort</returns>
+    private Vendor[] SearchVendors()
+    {
+        if (allVendors == null) return new Vendor[] { };
+
+        List<Vendor> filteredVendors = allVendors;
+
+        if (!string.IsNullOrEmpty(QueryString))
+        {
+            filteredVendors = filteredVendors.FindAll(p => p.Name.ToLower().Contains(QueryString.ToLower()) || p.Description.ToLower().Contains(QueryString.ToLower()));
+        }
+
+        // Sort the vendors
+        filteredVendors.Sort((v1, v2) =>
+        {
+            if (SortBy.Equals(SortPredicate.Closest)) return v1.Booth.CompareTo(v2.Booth);    // Sort by booth asc
+            else if (SortBy.Equals(SortPredicate.Cheapest))                                   // Sort by ave price asc
+            {   // Return vendor with cheapest average price accross their products
+                List<Product> v1Products = allProducts.Where(p => p.Vendor == v1.Name).ToList();
+                var v1PriceAve = v1Products.Aggregate(0, (acc, p) => acc + p.Price) / v1Products.Count();
+
+                List<Product> v2Products = allProducts.Where(p => p.Vendor == v2.Name).ToList();
+                var v2PriceAve = v2Products.Aggregate(0, (acc, p) => acc + p.Price) / v2Products.Count();
+
+                return v1PriceAve.CompareTo(v2PriceAve);
+            }
+            else return 0;      // default - newest
+        });
+        return filteredVendors.ToArray();
+    } 
 }

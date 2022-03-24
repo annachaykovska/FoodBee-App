@@ -4,9 +4,9 @@
 
 @*Display vendors*@
 
-@if (vendors != null)
+@if (Vendors != null)
 {
-    @foreach (Vendor v in vendors)
+    @foreach (Vendor v in Vendors)
     {
         <a class="card" style="margin: 5px 0px; text-decoration: none; color: initial; height: 6rem" href="vendor/@v.Name">
             <div class="row g-0">
@@ -25,12 +25,8 @@
 
 @code {
 
-    private Vendor[] vendors;
-
-    protected override async Task OnInitializedAsync()
-    {
-        vendors = await http.GetFromJsonAsync<Vendor[]>("data/vendors.json");
-    }
+    [Parameter]
+    public Vendor[] Vendors { get; set; }
 
     private string vendorImg(string url) => "Background-image: url(" + url + ");";
 
