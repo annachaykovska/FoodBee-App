@@ -7,4 +7,11 @@ namespace FoodBee.Models
         public string IconSelector { get; set; }
         public bool Active { get; set; }
     }
+
+    public enum SortPredicate
+    {
+        Closest,
+        Cheapest,
+        Newest
+    }
 }
