@@ -1,4 +1,5 @@
 ﻿@page "/"
+@inject IFoodBeeService<MapLayer> MapLayers
 @using FoodBee.Models
 @using FoodBee.Services
 
@@ -54,15 +55,14 @@
         </span>
 
         @*First two filters for spacing purposes*@
-        @for (int i = 0; i < 2; i++)
+        @foreach (MapLayer layer in MapLayers.GetAll().GetRange(0, 2))
         {
-            var index = i;
-            <div class="@MenuCssClass @ActiveCssClass(index)" @onclick="(e => FilterService.ToggleFilter(index))">
+            <div class="@MenuCssClass @ActiveCssClass(layer.Name)" @onclick="(e => MapLayers.Toggle(layer.Name))">
                 <span class="menu-icon">
-                    <i class="fa-solid @FilterService.Filters[i].IconSelector"></i>
+                    <i class="fa-solid @layer.IconClass"></i>
                 </span>
                 <span class="icon-label">
-                    @FilterService.Filters[i].Name
+                    @layer.Name
                 </span>
             </div>
         }
@@ -92,15 +92,14 @@
         </span>
        
         @*Remainging fitler hex buttons *@
-        @for (int i = 2; i < FilterService.Filters.Count(); i++)
+        @foreach (MapLayer layer in MapLayers.GetAll().GetRange(2, MapLayers.GetAll().Count - 2))
         {
-            var index = i;
-            <div class="@MenuCssClass @ActiveCssClass(index)" @onclick="(e => FilterService.ToggleFilter(index))">
+            <div class="@MenuCssClass @ActiveCssClass(layer.Name)" @onclick="(e => MapLayers.Toggle(layer.Name))">
                 <span class="menu-icon">
-                    <i class="fa-solid @FilterService.Filters[i].IconSelector"></i>
+                    <i class="fa-solid @layer.IconClass"></i>
                 </span>
                 <span class="icon-label">
-                    @FilterService.Filters[i].Name
+                    @layer.Name
                 </span>
             </div>
         }
@@ -124,26 +123,33 @@
     // On clear filter click
     private void ClearAll()
     {
-        FilterService.ClearFilters();
+        MapLayers.ClearActive();
         ToggleNavMenu();
     }
 
     // SHow / hide filter menu
     private void ToggleNavMenu() => collapseMenu = !collapseMenu;
 
-    //private string FiltersStr() => string.Join(",", FilterService.Filters.Where(f => f.Active).Select(f => f.Name));
 
     // CSS Class toggles and individual styles 
-    private string ActiveCssClass(int i) => FilterService.Filters[i].Active ? "active-filter" : null;
+
+    private string ActiveCssClass(string layer)
+    {
+        Console.WriteLine(MapLayers.GetActive().Contains(layer));
+        return MapLayers.GetActive().Contains(layer) ? "active-filter" : null;
+    }
+
     private string MenuCssClass => collapseMenu ? "hide-menu" : null;
     private string TitleCssClass => collapseMenu ? null : "hide-menu";
-    private string MapFilterCssClass => FilterService.NumActive() > 0 ? "map-" + ((FilterService.NumActive()+1) % 3) : "map-0";
+
+    private string MapFilterCssClass => MapLayers != null && MapLayers.GetNumActive() > 0 ? "map-" + ((MapLayers.GetNumActive()+1) % 3) : "map-0";
+
     private string MapCssClass => collapseMenu ? null : "blur-map";
     private string ConfirmBtn => collapseMenu ? null : "background-color: #8bc34a;";
     private string ClearBtn => collapseMenu ? null : "background-color: #ff5722;";
 
     // Surround number of active filters in brackets like "(6) Filters"
-    private string FormatNumActive() => FilterService.NumActive() > 0 ? "(" + FilterService.NumActive() + ")" : "";
+    private string FormatNumActive() => MapLayers.GetNumActive() > 0 ? "(" + MapLayers.GetNumActive() + ")" : "";
 
 
 }

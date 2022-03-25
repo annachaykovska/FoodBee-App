@@ -5,9 +5,9 @@ namespace FoodBee.Services
     public interface IFoodBeeService<T>
     {
         public List<T> GetAll();
-        public List<T> GetActive();
+        public List<string> GetActive();
         public void ClearActive();
-        public void Toggle(T entity);
+        public void Toggle(string entity);
         public int GetNumActive();
     }
 }
