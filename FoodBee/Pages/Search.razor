@@ -50,7 +50,12 @@
                 <div class="card-body">
                     @if (Filters.GetActive().Any())
                     {
-                        <small>Active</small>
+                        <div style="width: 100%">
+                            <small>Active</small>
+                            <button style="float: right" type="button" class="btn btn-outline-danger btn-sm" @onclick="@(e => Filters.ClearActive())">Clear Filters</button>
+
+                        </div>
+                        
                         <br />    
                         @foreach(string filter in Filters.GetActive())
                         {
