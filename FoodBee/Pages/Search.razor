@@ -3,6 +3,7 @@
 @using FoodBee.Services
 @using FoodBee.Components
 @inject HttpClient http
+@inject IFoodBeeService<Filter> Filters
 
 <div class="container">
 
@@ -39,7 +40,7 @@
             <div class="card-header" id="headingOne">
                 <h2 class="mb-0">
                     <button class="btn btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" @onclick="ToggleFiltersTray">
-                        @FilterService.NumActive() Filters
+                        @Filters.GetNumActive() Filters
                         <span style="float: right"><i class="fa-solid fa-angle-down @RotateIconClass"></i></span>
                     </button>
                 </h2>
@@ -47,16 +48,35 @@
 
             <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
                 <div class="card-body">
-                    Active
-                    <br />
-                    @foreach(Filter filter in FilterService.Filters.Where(f => f.Active))
+                    @if (Filters.GetActive().Any())
                     {
-                        <button @onclick="@(e => FilterService.ToggleFilter(filter))" type="button" class="btn btn-warning filter-btn">@filter.Name <i class="fa-solid fa-xmark"></i></button>
+                        <div style="width: 100%">
+                            <small>Active</small>
+                            <button style="float: right" type="button" class="btn btn-outline-danger btn-sm" @onclick="@(e => Filters.ClearActive())">Clear Filters</button>
+
+                        </div>
+                        
+                        <br />    
+                        @foreach(string filter in Filters.GetActive())
+                        {
+                            <button @onclick="@(e => Filters.Toggle(filter))" type="button" class="btn btn-warning filter-btn">@filter <i class="fa-solid fa-xmark"></i></button>
+                        }
+                        <hr />
                     }
-                    <hr />
-                    @foreach(Filter filter in FilterService.Filters.Where(f => !f.Active))
+                   
+                    @foreach(string category in Filters.GetAll().Select(f => f.Category).Distinct().ToList())
                     {
-                        <button @onclick="@(e => FilterService.ToggleFilter(filter))" type="button" class="btn btn-warning filter-btn">@filter.Name <i class="fa-solid fa-plus"></i></button>
+                        <div>
+                            <small>@category</small>
+                            <br>
+                            @foreach(Filter filter in Filters.GetAll().Where(f => f.Category == category))
+                            {
+                                if (!Filters.GetActive().Contains(filter.Name))
+                                {
+                                    <button @onclick="@(e => Filters.Toggle(filter.Name))" type="button" class="btn btn-warning filter-btn">@filter.Name <i class="fa-solid fa-plus"></i></button>
+                                }
+                            }
+                        </div>  
                     }
                 </div>
             </div>
@@ -124,6 +144,7 @@
             else if (SortBy.Equals(SortPredicate.Cheapest)) return p1.Price.CompareTo(p2.Price);        // Sort by price asc                                                                                
             else return 0;      // default (newest - we dont really have a way of finding this) 
         });
+
         return filteredProducts.ToArray();
     }
 
@@ -155,6 +176,7 @@
             }
             else return 0;      // default - newest
         });
+
         return filteredVendors.ToArray();
     } 
 }

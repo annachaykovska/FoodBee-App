@@ -1,103 +1,64 @@
 ﻿using FoodBee.Models;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace FoodBee.Services
 {
-    public static class FilterService
+    public class FilterService<T> : IFoodBeeService<Filter>
     {
+        private List<string> _activeFilters;
 
-        public static List<Filter> Filters { get; set; }
-        
-        static FilterService()
+        public FilterService()
         {
-            Filters = new List<Filter>()
-            {
-                new Filter
-                {
-                    Name = "Drinks",
-                    Active = false,
-                    IconSelector = "fa-whiskey-glass"
-                },
-                new Filter
-                {
-                    Name = "Food",
-                    Active = false,
-                    IconSelector = "fa-utensils"
-
-                },
-                new Filter
-                {
-                    Name = "Vegan",
-                    Active = false,
-                    IconSelector = "fa-leaf"
-                },
-                new Filter
-                {
-                    Name = "No Allergens",
-                    Active = false,
-                    IconSelector = "fa-shrimp"
-                },
-                new Filter
-                {
-                    Name = "Water",
-                    Active = false,
-                    IconSelector = "fa-faucet"
-                },
-                new Filter
-                {
-                    Name = "Events",
-                    Active = false,
-                    IconSelector = "fa-calendar"
-                },
-                new Filter
-                {
-                    Name = "Tickets",
-                    Active = false,
-                    IconSelector = "fa-ticket"
-                },
-                new Filter
-                {
-                    Name = "Lounges",
-                    Active = false,
-                    IconSelector = "fa-couch"
-                },
-                new Filter
-                {
-                    Name = "Washrooms",
-                    Active = false,
-                    IconSelector = "fa-restroom"
-                },
-                new Filter
-                {
-                    Name = "First aid",
-                    Active = false,
-                    IconSelector = "fa-kit-medical"
-                },
-                new Filter
-                {
-                    Name = "Security",
-                    Active = false,
-                    IconSelector = "fa-shield"
-                },
-                new Filter
-                {
-                    Name = "ATMs",
-                    Active = false,
-                    IconSelector = "fa-credit-card"
-                },
-                new Filter
-                {
-                    Name = "Accessible",
-                    Active = false,
-                    IconSelector = "fa-wheelchair"
-                },
-            }; ;
+            _activeFilters = new List<string>();
         }
 
-        public static void ClearFilters() => Filters.ForEach(f => f.Active = false);
-        public static void ToggleFilter(int i) => Filters.ElementAt(i).Active = !Filters[i].Active;
-        public static void ToggleFilter(Filter f) => Filters.Find(filter => filter == f).Active = !Filters.Find(filter => filter == f).Active;
-        public static int NumActive() => Filters.Aggregate(0, (acc, val) => val.Active ? acc + 1 : acc);
+        public void ClearActive() => this._activeFilters.Clear();
+        
+
+        public List<string> GetActive() => _activeFilters;
+
+        public List<Filter> GetAll()
+        {
+            return new List<Filter>()
+            {
+                // Product type filters
+                new Filter { Name = "Food", Category = "Type", DataField = "food" },
+                new Filter { Name = "Drinks", Category = "Type", DataField = "drink" },
+                new Filter { Name = "Other", Category= "Type" },
+
+                // Dietary filters
+                new Filter { Name = "Gluten Free", Category = "Dietary", DataField = "glutenfree" },
+                new Filter { Name = "Vegetarian", Category = "Dietary", DataField = "vegetarian" },
+                new Filter { Name = "Vegan", Category = "Dietary", DataField = "vegan" },
+                new Filter { Name = "Lactose Free", Category = "Dietary", DataField = "lactose" },
+                new Filter { Name = "No Nuts", Category = "Dietary", DataField = "nuts" },
+                new Filter { Name = "Alcoholic", Category = "Dietary" },
+
+
+                // Price filters 
+                new Filter { Name = "$", Category = "Price" },
+                new Filter { Name = "$$", Category = "Price" },
+                new Filter { Name = "$$$", Category = "Price" }
+
+
+                // Accessibility filters... may not need these
+                //new Filter { Name = "Wheelchair Friendly", Category = "Accessibility" }
+
+            };
+        }
+
+        public int GetNumActive() => this._activeFilters.Count;
+
+        public void Toggle(string entity)
+        {
+            if (_activeFilters.Contains(entity))
+            {
+                _activeFilters.Remove(entity);  
+            }
+            else
+            {
+                _activeFilters.Add(entity);
+            }
+        }
     }
 }
