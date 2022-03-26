@@ -1,0 +1,53 @@
+﻿@page "/saved"
+@using FoodBee.Components
+@using FoodBee.Models
+@using FoodBee.Services
+
+@inject IFoodBeeService<Vendor> Vendors
+@inject IFoodBeeService<Product> Products
+
+@*Nothing special here yet just going to re display the vendor list until vertical protoytpe *@
+
+<div class="container">
+    <div class="input-group" style="margin-bottom: 10px">
+        <NavLink href="/">
+            <button onclick="window.history.go(-1);" type="button" class="btn btn-outline-dark"><i class="fa-solid fa-angle-left"></i></button>
+        </NavLink>
+        <div style="margin-left: 10px; flex: 1;">
+            <h3>Saved</h3>
+        </div>
+
+        <div class="dropdown" style="margin-left: 5px;">
+            <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
+                <i class="fa-solid @ShowingIcon"></i>
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item @ProductsActive" @onclick="(e => ShowVendors = false)">Show Products</a>
+                <a class="dropdown-item @VendorsActive" @onclick="(e => ShowVendors = true)">Show Vendors</a>
+            </div>
+        </div>
+    </div>
+    
+    @if (ShowVendors)
+    {
+        <VendorList Vendors="@BookmarkedVendors"/>
+    }
+    else
+    {
+        <ProductList Products="@BookmarkedProducts"/>
+    }
+
+</div>
+
+@code {
+    private bool ShowVendors = false;
+
+    private List<Vendor> BookmarkedVendors => Vendors.GetAll().Where(v => Vendors.IsActive(v.Name)).ToList();
+    private List<Product> BookmarkedProducts => Products.GetAll().Where(p => Products.IsActive(p.Name)).ToList();
+
+    private string ProductsActive => ShowVendors ? null : "active";
+    private string VendorsActive => ShowVendors ? "active" : null;
+
+    private string ShowingIcon => ShowVendors ? "fa-map-location-dot" : "fa-bag-shopping";
+
+}

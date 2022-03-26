@@ -110,13 +110,12 @@
 @if (collapseMenu)
 {
     <div class="bottom-right">
-        <a role="button" class="btn btn-warning btn-rounded btn-lg aux-btn" href="saved-vendors"><i class="fa-solid fa-bookmark"></i></a>
+        <a role="button" class="btn btn-warning btn-rounded btn-lg aux-btn" href="saved"><i class="fa-solid fa-bookmark"></i></a>
         <a role="button" class="btn btn-warning btn-rounded btn-lg aux-btn" href="help"><i class="fa-solid fa-question"></i></a>
     </div>   
 }
 
 @code {
-
     // Whether the filte menu is open or not
     private bool collapseMenu = true;
 
@@ -135,7 +134,6 @@
 
     private string ActiveCssClass(string layer)
     {
-        Console.WriteLine(MapLayers.GetActive().Contains(layer));
         return MapLayers.GetActive().Contains(layer) ? "active-filter" : null;
     }
 

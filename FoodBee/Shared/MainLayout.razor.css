@@ -4,7 +4,7 @@
     flex-direction: column;
     width: 100vw;
     min-height: 100vh;
-    overflow-x: hidden;
+    overflow: hidden;
     background-color: whitesmoke;
 }
 

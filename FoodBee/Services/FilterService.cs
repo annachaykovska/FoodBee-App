@@ -1,5 +1,6 @@
 ﻿using FoodBee.Models;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace FoodBee.Services
 {
@@ -12,8 +13,12 @@ namespace FoodBee.Services
             _activeFilters = new List<string>();
         }
 
+        public Task InitializeAsync()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public void ClearActive() => this._activeFilters.Clear();
-        
 
         public List<string> GetActive() => _activeFilters;
 
@@ -48,6 +53,8 @@ namespace FoodBee.Services
         }
 
         public int GetNumActive() => this._activeFilters.Count;
+
+        public bool IsActive(string entity) => this._activeFilters.Contains(entity);
 
         public void Toggle(string entity)
         {
