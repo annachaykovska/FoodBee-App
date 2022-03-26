@@ -27,10 +27,7 @@ namespace FoodBee.Services
 
         public List<string> GetActive() => _activeLayers;
 
-        public void ClearActive()
-        {
-            this._activeLayers = new List<string>();
-        }
+        public void ClearActive() => _activeLayers.Clear();
 
         public int GetNumActive() => this._activeLayers.Count;
 
