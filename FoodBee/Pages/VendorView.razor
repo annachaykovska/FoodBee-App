@@ -56,5 +56,5 @@
         vendorProducts = Products.GetAll().Where(p => p.Vendor.Equals(Name)).ToArray();
     }
 
-    private string MarkedCSS => Vendors.GetActive().Contains(Name) ? "fa-solid" : "fa-regular";
+    private string MarkedCSS => Vendors.IsActive(Name) ? "fa-solid" : "fa-regular";
 }

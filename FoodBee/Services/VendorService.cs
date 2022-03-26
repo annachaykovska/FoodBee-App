@@ -7,6 +7,10 @@ using System.Threading.Tasks;
 
 namespace FoodBee.Services
 {
+    /// <summary>
+    /// This service handles data access for FoodBee Vendors from JSON HTTP response and bookmark/saving vendors.
+    /// </summary>
+    /// <typeparam name="T">FoodBee.Models.Vendor</typeparam>
     public class VendorService<T> : IFoodBeeService<Vendor>
     {
         private List<Vendor> _allVendors;

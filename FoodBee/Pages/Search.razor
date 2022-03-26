@@ -33,7 +33,7 @@
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item @ProductsActive" @onclick="(e => ShowVendors = false)">Show Products</a>
-                <a class="dropdown-item @VendorsActive" @onclick="(e => ShowVendors = true)">Show Locations</a>
+                <a class="dropdown-item @VendorsActive" @onclick="(e => ShowVendors = true)">Show Vendors</a>
             </div>
         </div>
 
@@ -101,9 +101,6 @@
 
 @code {
 
-    //private List<Product> Products.GetAll() { get; set; }
-    //private List<Vendor> allVendors { get; set; }
-
     private string QueryString { get; set; }
     private SortPredicate SortBy { get; set; }
 
@@ -119,15 +116,6 @@
 
     private bool ShowVendors = false;
     private string ShowingIcon => ShowVendors ? "fa-map-location-dot" : "fa-bag-shopping";
-
-    /// <summary>
-    /// Get the products and vendors asyncronously from http response
-    /// </summary>
-    //protected override async Task OnInitializedAsync()
-    //{
-    //    Products.GetAll() = (await http.GetFromJsonAsync<Product[]>("data/products.json")).ToList();
-    //    Vendors.GetAll() = (await http.GetFromJsonAsync<Vendor[]>("data/vendors.json")).ToList();
-    //}
 
     /// <returns>Return products that match the users search: filters, query string, and sort</returns>
     private List<Product> SearchProducts()

@@ -8,6 +8,14 @@ using System.Threading.Tasks;
 
 namespace FoodBee.Services
 {
+    /// <summary>
+    /// This servive handles data access for FoodBee products. On application startup is asyncronously loads the products 
+    /// from an HTTP request to `wwwroot/data/products.json` which contains a list of pre-generated products and is cached for 
+    /// easier access throughout the web page's lifetime.
+    /// The service also handles the abilioty for a user to bookmark/save a product, which are denoted as "Active" products (by name)
+    /// since this class implements the generic IFoodBeeService interface.
+    /// </summary>
+    /// <typeparam name="T">FoodBee.Models.Product</typeparam>
     public class ProductService<T> : IFoodBeeService<Product>
     {
         private List<Product> _allProducts;
