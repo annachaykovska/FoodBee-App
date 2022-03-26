@@ -1,6 +1,8 @@
 ﻿@page "/vendor/{name}"
 @using FoodBee.Models
-@inject HttpClient http
+@using FoodBee.Services
+@inject IFoodBeeService<Vendor> Vendors
+@inject IFoodBeeService<Product> Products
 
 <div class="container">
     <div class="input-group" style="margin-bottom: 10px">
@@ -10,7 +12,7 @@
         <div style="margin-left: 10px; flex: 1;">
             <h3>Vendor</h3>
         </div>
-        <button @onclick="ToggleBoookmark" type="button" class="btn btn-warning btn-lg"><i class="@MarkedCSS fa-bookmark"></i></button>
+        <button @onclick="@(e => Vendors.Toggle(Name))" type="button" class="btn btn-warning btn-lg"><i class="@MarkedCSS fa-bookmark"></i></button>
     </div>
 
     @if (vendor != null)
@@ -48,19 +50,11 @@
     private Vendor vendor;
     private Product[] vendorProducts;
 
-    protected override async Task OnInitializedAsync()
+    protected override void OnInitialized()
     {
-        Vendor[] vendors = await http.GetFromJsonAsync<Vendor[]>("data/vendors.json");
-        vendor = vendors.Where(v => v.Name == Name).First();
-
-        Product[] products = await http.GetFromJsonAsync<Product[]>("data/products.json");
-        vendorProducts = products.Where(p => p.Vendor == Name).ToArray();
+        vendor = Vendors.GetAll().Where(v => v.Name.Equals(Name)).First();
+        vendorProducts = Products.GetAll().Where(p => p.Vendor.Equals(Name)).ToArray();
     }
 
-    private bool Marked = false;
-
-    private string MarkedCSS => Marked ? "fa-solid" : "fa-regular";
-
-    private void ToggleBoookmark() => Marked = !Marked;   
-
+    private string MarkedCSS => Vendors.GetActive().Contains(Name) ? "fa-solid" : "fa-regular";
 }

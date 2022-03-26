@@ -1,5 +1,6 @@
 ﻿using FoodBee.Models;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace FoodBee.Services
 {
@@ -11,6 +12,12 @@ namespace FoodBee.Services
         {
             _activeLayers = new List<string>();
         }
+
+        public Task InitializeAsync()
+        {
+            throw new System.NotImplementedException();
+        }
+
         public List<MapLayer> GetAll()
         {
             return new List<MapLayer>()
@@ -42,5 +49,7 @@ namespace FoodBee.Services
                 this._activeLayers.Add(layer);
             }
         }
+
+        public bool IsActive(string entity) => this._activeLayers.Contains(entity);
     }
 }

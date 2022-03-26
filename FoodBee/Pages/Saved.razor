@@ -1,5 +1,10 @@
-﻿@page "/saved-vendors"
+﻿@page "/saved"
 @using FoodBee.Components
+@using FoodBee.Models
+@using FoodBee.Services
+
+@inject IFoodBeeService<Vendor> Vendors
+@inject IFoodBeeService<Product> Products
 
 @*Nothing special here yet just going to re display the vendor list until vertical protoytpe *@
 
@@ -23,10 +28,15 @@
         </div>
     </div>
     
-    @*<VendorList/>*@
+    @if (Vendors.GetAll() != null)
+    {
+        <VendorList Vendors="@BookmarkedVendors()"/>        
+    }
 
 </div>
 
 @code {
+
+    private List<Vendor> BookmarkedVendors() => Vendors.GetAll().Where(v => Vendors.IsActive(v.Name)).ToList();
 
 }

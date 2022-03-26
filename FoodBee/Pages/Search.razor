@@ -5,6 +5,10 @@
 @inject HttpClient http
 @inject IFoodBeeService<Filter> Filters
 
+@inject IFoodBeeService<Vendor> Vendors
+@inject IFoodBeeService<Product> Products
+
+
 <div class="container">
 
     @*Top search/filter bar*@
@@ -97,8 +101,8 @@
 
 @code {
 
-    private List<Product> allProducts { get; set; }
-    private List<Vendor> allVendors { get; set; }
+    //private List<Product> Products.GetAll() { get; set; }
+    //private List<Vendor> allVendors { get; set; }
 
     private string QueryString { get; set; }
     private SortPredicate SortBy { get; set; }
@@ -119,18 +123,19 @@
     /// <summary>
     /// Get the products and vendors asyncronously from http response
     /// </summary>
-    protected override async Task OnInitializedAsync()
-    {
-        allProducts = (await http.GetFromJsonAsync<Product[]>("data/products.json")).ToList();
-        allVendors = (await http.GetFromJsonAsync<Vendor[]>("data/vendors.json")).ToList();
-    }
+    //protected override async Task OnInitializedAsync()
+    //{
+    //    Products.GetAll() = (await http.GetFromJsonAsync<Product[]>("data/products.json")).ToList();
+    //    Vendors.GetAll() = (await http.GetFromJsonAsync<Vendor[]>("data/vendors.json")).ToList();
+    //}
 
     /// <returns>Return products that match the users search: filters, query string, and sort</returns>
-    private Product[] SearchProducts()
+    private List<Product> SearchProducts()
     {
-        if (allProducts == null) return new Product[] { };
+        //if (!Products.GetAll().Any()) return new List<Product>();
 
-        List<Product> filteredProducts = allProducts;
+        List<Product> filteredProducts = Products.GetAll();
+        Console.WriteLine(filteredProducts.Count);
 
         if (!string.IsNullOrEmpty(QueryString))
         {
@@ -140,20 +145,20 @@
         // Sort the Products
         filteredProducts.Sort((p1, p2) =>
         {
-            if (SortBy.Equals(SortPredicate.Closest)) return allVendors.Find(v => v.Name == p1.Vendor).Booth.CompareTo(allVendors.Find(v => v.Name == p2.Vendor).Booth);    // Sort by booth asc
+            if (SortBy.Equals(SortPredicate.Closest)) return Vendors.GetAll().Find(v => v.Name == p1.Vendor).Booth.CompareTo(Vendors.GetAll().Find(v => v.Name == p2.Vendor).Booth);    // Sort by booth asc
             else if (SortBy.Equals(SortPredicate.Cheapest)) return p1.Price.CompareTo(p2.Price);        // Sort by price asc                                                                                
             else return 0;      // default (newest - we dont really have a way of finding this) 
         });
 
-        return filteredProducts.ToArray();
+        return filteredProducts;
     }
 
     /// <returns>Return vendors that match the users search: filters, query string, and sort</returns>
-    private Vendor[] SearchVendors()
+    private List<Vendor> SearchVendors()
     {
-        if (allVendors == null) return new Vendor[] { };
+        if (!Vendors.GetAll().Any()) return new List<Vendor>();
 
-        List<Vendor> filteredVendors = allVendors;
+        List<Vendor> filteredVendors = Vendors.GetAll();
 
         if (!string.IsNullOrEmpty(QueryString))
         {
@@ -166,10 +171,10 @@
             if (SortBy.Equals(SortPredicate.Closest)) return v1.Booth.CompareTo(v2.Booth);    // Sort by booth asc
             else if (SortBy.Equals(SortPredicate.Cheapest))                                   // Sort by ave price asc
             {   // Return vendor with cheapest average price accross their products
-                List<Product> v1Products = allProducts.Where(p => p.Vendor == v1.Name).ToList();
+                List<Product> v1Products = Products.GetAll().Where(p => p.Vendor == v1.Name).ToList();
                 var v1PriceAve = v1Products.Aggregate(0, (acc, p) => acc + p.Price) / v1Products.Count();
 
-                List<Product> v2Products = allProducts.Where(p => p.Vendor == v2.Name).ToList();
+                List<Product> v2Products = Products.GetAll().Where(p => p.Vendor == v2.Name).ToList();
                 var v2PriceAve = v2Products.Aggregate(0, (acc, p) => acc + p.Price) / v2Products.Count();
 
                 return v1PriceAve.CompareTo(v2PriceAve);
@@ -177,6 +182,6 @@
             else return 0;      // default - newest
         });
 
-        return filteredVendors.ToArray();
+        return filteredVendors;
     } 
 }

@@ -26,7 +26,7 @@
 
 @code {
     [Parameter]
-    public Product[] Products { get; set; }
+    public List<Product> Products { get; set; }
 
     private string productImg(string url) => "Background-image: url(" + url + ");";
 
