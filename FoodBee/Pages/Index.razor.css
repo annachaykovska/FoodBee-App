@@ -10,6 +10,39 @@
     /*background-size: 200%;*/
 }
 
+.you-are-here {
+    display: block;
+    height: 24px;
+    width: 24px;
+    border-radius: 50%;
+    background-color: royalblue;
+    margin-top: 200px;
+    margin-left: 80px;
+    border: 3px solid whitesmoke;
+    animation: pulse-black 2s infinite;
+}
+@keyframes pulse-black {
+    0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 #b6d1df;
+    }
+
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 10px #b6d1df;
+    }
+
+    100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 #b6d1df;
+    }
+}
+
+
+.map::-webkit-scrollbar {
+    display: none;
+}
+
 .map-0 {
     background-image: url("Images/map-f0.png");
 }

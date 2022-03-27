@@ -74,9 +74,3 @@ a {
     background-size: cover;
     overflow: hidden;
 }
-
-::-webkit-scrollbar {
-    opacity: 0;
-    visibility: hidden;
-    width: 0px;
-}
