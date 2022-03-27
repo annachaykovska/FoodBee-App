@@ -27,6 +27,15 @@
     </div>
     <script src="_framework/blazor.webassembly.js"></script>
     <script>navigator.serviceWorker.register('service-worker.js');</script>
+    <script>
+        function scrollToDot() {
+            window.scroll({ 
+                top: 0,
+                left: 0,
+                behavior: 'smooth'  
+            });
+        }
+    </script>
 </body>
 
 </html>

@@ -119,12 +119,6 @@
     public string Name { get; set; }       // The name of the vendor we are to show
     private Product product;
 
-    //protected override async Task OnInitializedAsync()
-    //{
-    //    Product[] products = await http.GetFromJsonAsync<Product[]>("data/products.json");
-    //    product = products.Where(p => p.Name == Name).First();
-    //}
-
     protected override void OnInitialized()
     {
         product = Products.GetAll().Where(p => p.Name.Equals(Name)).First();

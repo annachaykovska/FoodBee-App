@@ -18,7 +18,7 @@
     background-color: royalblue;
     margin-top: 200px;
     margin-left: 80px;
-    border: 3px solid whitesmoke;
+    border: 4px solid whitesmoke;
     animation: pulse-black 2s infinite;
 }
 @keyframes pulse-black {
@@ -201,7 +201,7 @@
 .bottom-right {
     position: fixed;
     right: 10px;
-    bottom: 60px;
+    bottom: 40px;
     display: flex;
     flex-direction: column;
 }

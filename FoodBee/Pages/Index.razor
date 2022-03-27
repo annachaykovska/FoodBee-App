@@ -1,9 +1,10 @@
 ﻿@page "/"
 @inject IFoodBeeService<MapLayer> MapLayers
+@inject IJSRuntime JsRuntime
 @using FoodBee.Models
 @using FoodBee.Services
 
-<div class="map @MapFilterCssClass @MapCssClass">
+<div id="map" class="map @MapFilterCssClass @MapCssClass">
     <span class="you-are-here"></span>
 </div>
 
@@ -112,8 +113,10 @@
 @if (collapseMenu)
 {
     <div class="bottom-right">
+        <button @onclick="Relocate" class="btn btn-warning btn-rounded btn-lg aux-btn" href="help"><i class="fa-solid fa-location-arrow"></i></button>
         <a role="button" class="btn btn-warning btn-rounded btn-lg aux-btn" href="saved"><i class="fa-solid fa-bookmark"></i></a>
         <a role="button" class="btn btn-warning btn-rounded btn-lg aux-btn" href="help"><i class="fa-solid fa-question"></i></a>
+
     </div>   
 }
 
@@ -150,6 +153,17 @@
 
     // Surround number of active filters in brackets like "(6) Filters"
     private string FormatNumActive() => MapLayers.GetNumActive() > 0 ? "(" + MapLayers.GetNumActive() + ")" : "";
+
+    /// <summary>
+    /// See function: scrollToDot in wwwroot/index.html.
+    /// 
+    /// Note: window.scroll() does not seem to work in ios standalone mode so if we demo we may have to open in a 
+    /// regular safri window. Or, check how it looks on android/android emulator.
+    /// </summary>
+    private async void Relocate()
+    {
+        await JsRuntime.InvokeVoidAsync("scrollToDot");
+    } 
 
 
 }
