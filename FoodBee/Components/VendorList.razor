@@ -3,8 +3,11 @@
 @inject HttpClient http
 
 @*Display vendors*@
-
-@if (Vendors != null)
+@if (!Vendors.Any())
+{
+    <span>Nothing to show...</span>
+}
+else if (Vendors != null)
 {
     @foreach (Vendor v in Vendors)
     {
@@ -21,6 +24,10 @@
             </div>
         </a>
     }
+}
+else if (Vendors.Count == 0)
+{
+    <span>Nothing to show../.</span>
 }
 
 @code {
