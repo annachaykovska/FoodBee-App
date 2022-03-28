@@ -1,11 +1,18 @@
-﻿@page "/"
+﻿@page "/{navigate?}"
 @inject IFoodBeeService<MapLayer> MapLayers
 @inject IJSRuntime JsRuntime
 @using FoodBee.Models
 @using FoodBee.Services
+@implements IDisposable
 
 <div id="map" class="map @MapFilterCssClass @MapCssClass">
-    <span class="you-are-here"></span>
+    <div id="you-are-here"></div>
+    
+    @*Always points to booth 813 (on mobile)*@
+    <div id="destination"></div>    
+
+    
+    
 </div>
 
 <div class="title @TitleCssClass">
@@ -116,11 +123,14 @@
         <button @onclick="Relocate" class="btn btn-warning btn-rounded btn-lg aux-btn" href="help"><i class="fa-solid fa-location-arrow"></i></button>
         <a role="button" class="btn btn-warning btn-rounded btn-lg aux-btn" href="saved"><i class="fa-solid fa-bookmark"></i></a>
         <a role="button" class="btn btn-warning btn-rounded btn-lg aux-btn" href="help"><i class="fa-solid fa-question"></i></a>
-
     </div>   
 }
 
 @code {
+
+    [Parameter]
+    public string Navigate { get; set; }
+
     // Whether the filte menu is open or not
     private bool collapseMenu = true;
 
@@ -163,7 +173,21 @@
     private async void Relocate()
     {
         await JsRuntime.InvokeVoidAsync("scrollToDot");
-    } 
+    }
 
+    protected override async void OnAfterRender(bool firstRender)
+    {
+        @if (!string.IsNullOrEmpty(Navigate))
+        {
+            await JsRuntime.InvokeVoidAsync("drawNavLine");
+            await JsRuntime.InvokeVoidAsync("scrollToDestination");
+        }
+        
+    }
+
+    public async void Dispose()
+    {
+        await JsRuntime.InvokeVoidAsync("clearNavLine"); 
+    }
 
 }

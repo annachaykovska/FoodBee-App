@@ -27,12 +27,34 @@
     </div>
     <script src="_framework/blazor.webassembly.js"></script>
     <script>navigator.serviceWorker.register('service-worker.js');</script>
+    <script src="js/leader-line.min.js"></script>
     <script>
+        var navLine;
+        function drawNavLine() {
+            navLine = new LeaderLine(
+                document.getElementById('you-are-here'),
+                document.getElementById('destination')
+            );
+        }
+
+        function clearNavLine() {
+            navLine ? navLine.remove() : null;
+            navLine = undefined;
+        }
+
+        function scrollToDestination() {
+            window.scroll({
+                top: 200,
+                left: 800,
+                behavior: 'smooth'
+            });
+        }
+
         function scrollToDot() {
-            window.scroll({ 
+            window.scroll({
                 top: 0,
                 left: 0,
-                behavior: 'smooth'  
+                behavior: 'smooth'
             });
         }
     </script>
