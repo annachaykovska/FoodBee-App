@@ -16,6 +16,12 @@
     left: 980px;
 }
 
+#dest-card {
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
 #you-are-here {
     display: block;
     height: 24px;
