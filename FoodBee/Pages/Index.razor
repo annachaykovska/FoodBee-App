@@ -1,121 +1,145 @@
-﻿@page "/"
+﻿@page "/{navigate?}"
 @inject IFoodBeeService<MapLayer> MapLayers
+@inject IJSRuntime JsRuntime
 @using FoodBee.Models
 @using FoodBee.Services
+@implements IDisposable
 
-<div class="map @MapFilterCssClass @MapCssClass"></div>
-
-<div class="title @TitleCssClass">
-    <div class="title-sub">
-        Welcome
-    </div>
-    <div class="title-main">
-        FoodBee
-    </div>
-    <div class="title-sub">
-        <i class="fa-solid fa-location-dot"></i> YYC Beer Festival
-    </div>
+<div id="map" class="map @MapFilterCssClass @MapCssClass" @onclick="@(e => Navigate="navigate=Daniel's Desserts")">
+    <div id="you-are-here"></div>
+    
+    @*Always points to booth 813 (on mobile)*@
+    <div id="destination"></div>    
 </div>
 
-<div class="menu">
-    <div class="menu-container">
-        <div style="visibility: hidden"><span class="menu-icon">1</span></div>
-        <div style="visibility: hidden"><span class="menu-icon">2</span></div>
-        @*<div style="visibility: hidden"><span class="menu-icon">2</span></div>*@
+@if (!string.IsNullOrEmpty(Navigate))
+{
+    <div class="card text-white bg-secondary mb-3" id="dest-card" style="width: 100%;">
+        <div class="card-header">
+            @Navigate.Split("=")[1]
+            <button @onclick="ClearRoute" style="float: right" type="button" class="btn btn-danger">Cancel</button>
+        </div>
+    </div>
+}
+else
+{
+    <div class="title @TitleCssClass">
+        <div class="title-sub">
+            Welcome
+        </div>
+        <div class="title-main">
+            FoodBee
+        </div>
+        <div class="title-sub">
+            <i class="fa-solid fa-location-dot"></i> YYC Beer Festival
+        </div>
+    </div>
+
+    <div class="menu">
+        <div class="menu-container">
+            <div style="visibility: hidden"><span class="menu-icon">1</span></div>
+            <div style="visibility: hidden"><span class="menu-icon">2</span></div>
+            @*<div style="visibility: hidden"><span class="menu-icon">2</span></div>*@
 
       
-        <span class="hex-wrap">
-            @* Search/clear filters hex *@
-            @if (collapseMenu)
-            {
-                <span class="hex-wrap">
-                    <NavLink style="color: unset" href="search">
-                        <div class="ripple" style="@ClearBtn">
-                            <span class="menu-icon">
-                                <i class="fa-solid fa-magnifying-glass"></i>
-                            </span>
-                            <span class="icon-label">
-                                Search
-                            </span>
-                        </div>
-                    </NavLink>
-                </span>
-            } 
-            else
-            {         
-                <div class="ripple" @onclick="@ClearAll" style="@ClearBtn">
-                    <span class="menu-icon">
-                        <i class="fa-solid fa-x"></i>
-                    </span>
-                    <span class="icon-label">
-                        Clear all
-                    </span>
-                </div>              
-            }
-        </span>
-
-        @*First two filters for spacing purposes*@
-        @foreach (MapLayer layer in MapLayers.GetAll().GetRange(0, 2))
-        {
-            <div class="@MenuCssClass @ActiveCssClass(layer.Name)" @onclick="(e => MapLayers.Toggle(layer.Name))">
-                <span class="menu-icon">
-                    <i class="fa-solid @layer.IconClass"></i>
-                </span>
-                <span class="icon-label">
-                    @layer.Name
-                </span>
-            </div>
-        }
-
-        <span class="hex-wrap"> 
-            <div class="ripple" @onclick="@ToggleNavMenu" style="@ConfirmBtn">
-                @*Filter/confirm filters hex buttons *@
+            <span class="hex-wrap">
+                @* Search/clear filters hex *@
                 @if (collapseMenu)
                 {
-                        <span class="menu-icon">
-                            <i class="fa-solid fa-layer-group"></i>
-                        </span>
-                        <span class="icon-label">
-                            @FormatNumActive() Layers
-                        </span>
+                    <span class="hex-wrap">
+                        <NavLink style="color: unset" href="search">
+                            <div class="ripple" style="@ClearBtn">
+                                <span class="menu-icon">
+                                    <i class="fa-solid fa-magnifying-glass"></i>
+                                </span>
+                                <span class="icon-label">
+                                    Search
+                                </span>
+                            </div>
+                        </NavLink>
+                    </span>
                 } 
                 else
-                {     
+                {         
+                    <div class="ripple" @onclick="@ClearAll" style="@ClearBtn">
                         <span class="menu-icon">
-                            <i class="fa-solid fa-check"></i>
+                            <i class="fa-solid fa-x"></i>
                         </span>
                         <span class="icon-label">
-                            Confirm
-                        </span>     
+                            Clear all
+                        </span>
+                    </div>              
                 }
-            </div>
-        </span>
+            </span>
+
+            @*First two filters for spacing purposes*@
+            @foreach (MapLayer layer in MapLayers.GetAll().GetRange(0, 2))
+            {
+                <div class="@MenuCssClass @ActiveCssClass(layer.Name)" @onclick="(e => MapLayers.Toggle(layer.Name))">
+                    <span class="menu-icon">
+                        <i class="fa-solid @layer.IconClass"></i>
+                    </span>
+                    <span class="icon-label">
+                        @layer.Name
+                    </span>
+                </div>
+            }
+
+            <span class="hex-wrap"> 
+                <div class="ripple" @onclick="@ToggleNavMenu" style="@ConfirmBtn">
+                    @*Filter/confirm filters hex buttons *@
+                    @if (collapseMenu)
+                    {
+                            <span class="menu-icon">
+                                <i class="fa-solid fa-layer-group"></i>
+                            </span>
+                            <span class="icon-label">
+                                @FormatNumActive() Layers
+                            </span>
+                    } 
+                    else
+                    {     
+                            <span class="menu-icon">
+                                <i class="fa-solid fa-check"></i>
+                            </span>
+                            <span class="icon-label">
+                                Confirm
+                            </span>     
+                    }
+                </div>
+            </span>
        
-        @*Remainging fitler hex buttons *@
-        @foreach (MapLayer layer in MapLayers.GetAll().GetRange(2, MapLayers.GetAll().Count - 2))
-        {
-            <div class="@MenuCssClass @ActiveCssClass(layer.Name)" @onclick="(e => MapLayers.Toggle(layer.Name))">
-                <span class="menu-icon">
-                    <i class="fa-solid @layer.IconClass"></i>
-                </span>
-                <span class="icon-label">
-                    @layer.Name
-                </span>
-            </div>
-        }
-    </div>
-</div>
+            @*Remainging fitler hex buttons *@
+            @foreach (MapLayer layer in MapLayers.GetAll().GetRange(2, MapLayers.GetAll().Count - 2))
+            {
+                <div class="@MenuCssClass @ActiveCssClass(layer.Name)" @onclick="(e => MapLayers.Toggle(layer.Name))">
+                    <span class="menu-icon">
+                        <i class="fa-solid @layer.IconClass"></i>
+                    </span>
+                    <span class="icon-label">
+                        @layer.Name
+                    </span>
+                </div>
+            }
+        </div>
+    </div>   
+}
 
 @*Shortcut to list saved products*@
 @if (collapseMenu)
 {
     <div class="bottom-right">
+        <button @onclick="Relocate" class="btn btn-warning btn-rounded btn-lg aux-btn" href="help"><i class="fa-solid fa-location-arrow"></i></button>
         <a role="button" class="btn btn-warning btn-rounded btn-lg aux-btn" href="saved"><i class="fa-solid fa-bookmark"></i></a>
         <a role="button" class="btn btn-warning btn-rounded btn-lg aux-btn" href="help"><i class="fa-solid fa-question"></i></a>
     </div>   
 }
 
 @code {
+
+    [Parameter]
+    public string Navigate { get; set; }
+
     // Whether the filte menu is open or not
     private bool collapseMenu = true;
 
@@ -149,5 +173,37 @@
     // Surround number of active filters in brackets like "(6) Filters"
     private string FormatNumActive() => MapLayers.GetNumActive() > 0 ? "(" + MapLayers.GetNumActive() + ")" : "";
 
+    /// <summary>
+    /// See function: scrollToDot in wwwroot/index.html.
+    /// 
+    /// Note: window.scroll() does not seem to work in ios standalone mode so if we demo we may have to open in a 
+    /// regular safri window. Or, check how it looks on android/android emulator.
+    /// </summary>
+    private async void Relocate()
+    {
+        await JsRuntime.InvokeVoidAsync("scrollToDot");
+    }
+
+    protected override async void OnAfterRender(bool firstRender)
+    {
+        @if (!string.IsNullOrEmpty(Navigate))
+        {
+            await JsRuntime.InvokeVoidAsync("drawNavLine");
+            await JsRuntime.InvokeVoidAsync("scrollToDestination");
+        }
+
+    }
+
+    public async void Dispose()
+    {
+        await JsRuntime.InvokeVoidAsync("clearNavLine"); 
+    }
+
+    private async void ClearRoute()
+    {
+        Navigate = null;
+        await JsRuntime.InvokeVoidAsync("clearNavLine"); 
+        await JsRuntime.InvokeVoidAsync("scrollToDot");
+    }
 
 }

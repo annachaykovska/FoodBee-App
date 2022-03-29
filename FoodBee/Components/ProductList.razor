@@ -3,8 +3,11 @@
 @inject HttpClient http
 
 @*Display Products*@
-
-@if (Products != null)
+@if (!Products.Any())
+{
+    <span>Nothing to show...</span>
+}
+else if (Products != null)
 {
 
     @foreach (Product p in Products)
@@ -23,6 +26,8 @@
         </a>
     }
 }
+
+
 
 @code {
     [Parameter]

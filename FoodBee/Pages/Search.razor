@@ -20,7 +20,7 @@
             <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
                 <i class="fa-solid fa-arrow-down-wide-short"></i>
             </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item @ActiveSortClass(SortPredicate.Cheapest)" @onclick="(e => SortBy = SortPredicate.Cheapest)">Cheapest</a>
                 <a class="dropdown-item @ActiveSortClass(SortPredicate.Closest)" @onclick="(e => SortBy = SortPredicate.Closest)">Closest</a>
                 <a class="dropdown-item @ActiveSortClass(SortPredicate.Newest)" @onclick="(e => SortBy = SortPredicate.Newest)">Newest</a>
@@ -31,7 +31,7 @@
             <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
                 <i class="fa-solid @ShowingIcon"></i>
             </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
                 <a class="dropdown-item @ProductsActive" @onclick="(e => ShowVendors = false)">Show Products</a>
                 <a class="dropdown-item @VendorsActive" @onclick="(e => ShowVendors = true)">Show Vendors</a>
             </div>
@@ -123,7 +123,7 @@
         //if (!Products.GetAll().Any()) return new List<Product>();
 
         List<Product> filteredProducts = Products.GetAll();
-        Console.WriteLine(filteredProducts.Count);
+
 
         if (!string.IsNullOrEmpty(QueryString))
         {

@@ -1,11 +1,77 @@
 ﻿.map {
     z-index: 0;
-    min-height: 100vh;
-    width: 100%;
-    background-attachment: fixed;
+    min-height: 1007px;
+    width: 1563px;
+    overflow: scroll !important;
+    overflow-x: scroll;
+    /*background-attachment: fixed;*/
     background-position: center;
     background-repeat: no-repeat;
-    background-size: cover;
+    /*background-size: 200%;*/
+}
+
+#destination {
+    position: absolute;
+    bottom: 390px;
+    left: 980px;
+}
+
+#dest-card {
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+#you-are-here {
+    display: block;
+    height: 24px;
+    width: 24px;
+    border-radius: 50%;
+    background-color: royalblue;
+    margin-top: 220px;
+    margin-left: 80px;
+    border: 4px solid whitesmoke;
+    animation: pulse-black 1.5s infinite;
+}
+
+@keyframes pulse-black {
+    0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 #b6d1df;
+    }
+
+    70% {
+        transform: scale(1);
+        box-shadow: 0 0 0 10px #b6d1df;
+    }
+
+    100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 #b6d1df;
+    }
+}
+
+#arrow {
+    position: absolute;
+    width: 2px;
+    background-color: red;
+    transform-origin: bottom center;
+}
+
+    #arrow::before {
+        position: absolute;
+        height: 0px;
+        width: 0px;
+        border: 6px solid transparent;
+        border-bottom: 8px solid red;
+        content: "";
+        top: 220px;
+        left: 80px;
+        transform: translateX(-50%);
+    }
+
+.map::-webkit-scrollbar {
+    display: none;
 }
 
 .map-0 {
@@ -166,9 +232,10 @@
 .bottom-right {
     position: fixed;
     right: 10px;
-    bottom: 60px;
+    bottom: 40px;
     display: flex;
     flex-direction: column;
+    z-index: 99;
 }
 
 .btn.btn-rounded {
