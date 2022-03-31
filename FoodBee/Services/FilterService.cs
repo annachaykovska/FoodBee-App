@@ -27,23 +27,23 @@ namespace FoodBee.Services
             return new List<Filter>()
             {
                 // Product type filters
-                new Filter { Name = "Food", Category = "Type", DataField = "food" },
-                new Filter { Name = "Drinks", Category = "Type", DataField = "drink" },
-                new Filter { Name = "Other", Category= "Type" },
+                new Filter { Name = "Food", Category = "Type", DataField = "Food" },
+                new Filter { Name = "Drinks", Category = "Type", DataField = "Drink" },
+                new Filter { Name = "Other", Category= "Type", DataField = null },
 
                 // Dietary filters
-                new Filter { Name = "Gluten Free", Category = "Dietary", DataField = "glutenfree" },
-                new Filter { Name = "Vegetarian", Category = "Dietary", DataField = "vegetarian" },
-                new Filter { Name = "Vegan", Category = "Dietary", DataField = "vegan" },
-                new Filter { Name = "Lactose Free", Category = "Dietary", DataField = "lactose" },
-                new Filter { Name = "No Nuts", Category = "Dietary", DataField = "nuts" },
-                new Filter { Name = "Alcoholic", Category = "Dietary" },
+                new Filter { Name = "Gluten Free", Category = "Dietary", DataField = "Glutenfree" },
+                new Filter { Name = "Vegetarian", Category = "Dietary", DataField = "Vegetarian" },
+                new Filter { Name = "Vegan", Category = "Dietary", DataField = "Vegan" },
+                new Filter { Name = "Lactose Free", Category = "Dietary", DataField = "Lactose" },
+                new Filter { Name = "No Nuts", Category = "Dietary", DataField = "Nuts" },
+                new Filter { Name = "Alcoholic", Category = "Dietary", DataField = null },
 
 
                 // Price filters 
-                new Filter { Name = "$", Category = "Price" },
-                new Filter { Name = "$$", Category = "Price" },
-                new Filter { Name = "$$$", Category = "Price" }
+                new Filter { Name = "$", Category = "Price", DataField = null },
+                new Filter { Name = "$$", Category = "Price", DataField = null },
+                new Filter { Name = "$$$", Category = "Price", DataField = null }
 
 
                 // Accessibility filters... may not need these

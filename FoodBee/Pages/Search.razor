@@ -2,6 +2,7 @@
 @using FoodBee.Models
 @using FoodBee.Services
 @using FoodBee.Components
+@using System.Reflection
 @inject HttpClient http
 @inject IFoodBeeService<Filter> Filters
 
@@ -124,19 +125,27 @@
 
         List<Product> filteredProducts = Products.GetAll();
 
-
+        // filter by search string
         if (!string.IsNullOrEmpty(QueryString))
         {
             filteredProducts = filteredProducts.FindAll(p => p.Name.ToLower().Contains(QueryString.ToLower()) || p.Description.ToLower().Contains(QueryString.ToLower()));
         }
 
+        // filter by active filter selection
+        List<Filter> active = Filters.GetAll().FindAll(f => Filters.GetActive().Contains(f.Name) && !string.IsNullOrEmpty(f.DataField));    // Get the active filters that have a DataField
+        filteredProducts = filteredProducts.FindAll(p => active.Aggregate(true, (acc, val) => acc && p.GetType().GetProperty(val.DataField).GetValue(p, null).Equals(1)));      // filter to products that satisfy all actiuve filters
+
         // Sort the Products
         filteredProducts.Sort((p1, p2) =>
         {
-            if (SortBy.Equals(SortPredicate.Closest)) return Vendors.GetAll().Find(v => v.Name == p1.Vendor).Booth.CompareTo(Vendors.GetAll().Find(v => v.Name == p2.Vendor).Booth);    // Sort by booth asc
-            else if (SortBy.Equals(SortPredicate.Cheapest)) return p1.Price.CompareTo(p2.Price);        // Sort by price asc                                                                                
+            if (SortBy.Equals(SortPredicate.Closest)) {     // Sort by booth asc
+            return Vendors.GetAll().Find(v => v.Name == p1.Vendor).Booth.CompareTo(Vendors.GetAll().Find(v => v.Name == p2.Vendor).Booth);    
+            }
+            else if (SortBy.Equals(SortPredicate.Cheapest)) {   // Sort by price asc  
+            return p1.Price.CompareTo(p2.Price);               
+            }
             else return 0;      // default (newest - we dont really have a way of finding this) 
-        });
+    });
 
         return filteredProducts;
     }
@@ -152,6 +161,16 @@
         {
             filteredVendors = filteredVendors.FindAll(p => p.Name.ToLower().Contains(QueryString.ToLower()) || p.Description.ToLower().Contains(QueryString.ToLower()));
         }
+
+        // filter by active filter selection
+        List<Filter> active = Filters.GetAll().FindAll(f => Filters.GetActive().Contains(f.Name) && !string.IsNullOrEmpty(f.DataField));    // Get the active filters that have a DataField
+        filteredVendors = filteredVendors.FindAll(v =>
+        {
+            List<Product> vendorProducts = Products.GetAll().FindAll(p => p.Vendor == v.Name);
+            // Look through the vendor's products, if at least one satifies the active filters we return true
+            return vendorProducts.Aggregate(false, (accOuter, p) => accOuter || active.Aggregate(true, (accInner, f) => accInner && p.GetType().GetProperty(f.DataField).GetValue(p, null).Equals(1)));
+
+        });
 
         // Sort the vendors
         filteredVendors.Sort((v1, v2) =>
