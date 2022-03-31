@@ -1,0 +1,94 @@
+﻿
+@switch(Type)
+{
+
+    case "vegan":
+        <span class="diet-icon" style="background-color: darkseagreen">V</span>
+        @if (ShowDesc)
+        {
+            <span>  this item is vegan friendly</span>
+        }
+        break;
+    case "vegetarian":
+        <span class="diet-icon" style="background-color: lawngreen">VG</span>
+        @if (ShowDesc)
+        {
+            <span>  this item is vegetarian</span>
+        }
+        break;
+    case "glutenfree":
+        <span class="diet-icon" style="background-color: gold">GF</span>
+        @if (ShowDesc)
+        {
+            <span>  this item is gluten free</span>
+        }
+        break;
+    case "halal":
+        <span class="diet-icon" style="background-color: mediumpurple">HF</span>
+        @if (ShowDesc)
+        {
+            <span>  this item is halal friendly</span>
+        }
+        break;
+    case "nuts":
+        <img style="margin-left: 4px;" src="https://cdn.discordapp.com/attachments/930235478324699181/948277092561354832/nut.png" height="32" width="32"/>
+        @if (ShowDesc)
+        {
+            <span>  this item is nut free</span>
+        }
+        break;
+    case "fish":
+        <span class="fa-stack">
+            <i style="color: teal" class="fa-solid fa-circle fa-stack-2x"></i>
+            <i class="fa-solid fa-fish fa-stack-1x fa-inverse"></i>
+        </span>
+        @if (ShowDesc)
+        {
+            <span>  this item contains fish</span>
+        }
+        break;
+
+    case "lactose":
+        <span class="fa-stack">
+            <i class="fa-solid fa-ice-cream fa-stack-1x"></i>
+            <i class="fa-solid fa-ban fa-stack-2x" style="color:Tomato"></i>
+        </span>
+        @if (ShowDesc)
+        {
+            <span>  this item is dairy free</span>   
+        }
+        break;
+    case "eggs":
+        <span class="fa-stack">
+            <i style="color: orangered" class="fa-solid fa-circle fa-stack-2x"></i>
+            <i class="fa-solid fa-egg fa-stack-1x fa-inverse"></i>
+        </span>
+        @if (ShowDesc)
+        {
+            <span>  this item contains eggs</span>
+        }
+        break;
+    case "alcohol":
+        <span class="fa-stack">
+            <i style="color: darkgoldenrod" class="fa-solid fa-circle fa-stack-2x"></i>
+            <i class="fa-solid fa-martini-glass fa-stack-1x fa-inverse"></i>
+        </span>
+        @if (ShowDesc)
+        {
+            <span>  this item contains alcohol</span>
+        }
+        break;
+    default:
+        <span>Invalid dietary icon selection</span>
+        break;
+}
+
+
+
+@code {
+    [Parameter]
+    public string Type { get; set; }
+
+    [Parameter]
+    public bool ShowDesc { get; set; }
+}

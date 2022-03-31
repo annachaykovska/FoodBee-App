@@ -19,8 +19,8 @@ namespace FoodBee.Models
         
 
         // Product type flags
-        private int Food { get; set; }
-        private int Drink { get; set; }
+        public int Food { get; set; }
+        public int Drink { get; set; }
 
         public string? ImageUrl { get; set; }
 

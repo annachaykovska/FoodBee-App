@@ -2,32 +2,6 @@
     margin-right: 20px;
 }
 
-.diet-icon {
-    height: 32px;
-    width: 32px;
-    border-radius: 50%;
-    padding: 5px;
-    text-align: center;
-    margin-left: 4px;
-    display: inline-block;
-    min-width: max-content;
-}
-
-.vegan {
-    background-color: darkseagreen;
-}
-
-.vegetarian {
-    background-color: lawngreen;
-}
-
-.gluten-free {
-    background-color: gold;
-}
-
-.halal {
-    background-color: mediumpurple;
-}
 
 li {
     margin-bottom: 5px;

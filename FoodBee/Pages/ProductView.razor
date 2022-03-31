@@ -2,11 +2,12 @@
 @inject IFoodBeeService<Product> Products
 @using FoodBee.Models
 @using FoodBee.Services
+@using FoodBee.Components
 
 <div class="container">
     <div class="input-group">
-        <NavLink href="/">
-            <button onclick="window.history.go(-1);" type="button" class="btn btn-outline-dark"><i class="fa-solid fa-angle-left"></i></button>
+        <NavLink href="/search">
+            <button type="button" class="btn btn-outline-dark"><i class="fa-solid fa-angle-left"></i></button>
         </NavLink>
         <div style="margin-left: 10px; flex: 1;">
             <h3>Product</h3>
@@ -33,14 +34,10 @@
                     </button>
                 </div>
 
-                    <span class="diet-icon vegan">V</span>
-                    <span class="diet-icon vegetarian">VG</span>
-                    <span class="fa-stack" style="margin-bottom: 5px">
-                        <i style="color: cornflowerblue" class="fa-solid fa-circle fa-stack-2x"></i>
-                        <i class="fa-solid fa-ice-cream fa-stack-1x fa-inverse"></i>
-                    </span>
-                    <img style="margin-bottom: 5px" src="https://cdn.discordapp.com/attachments/930235478324699181/948277092561354832/nut.png" height="32" width="32"/>
-         
+                @foreach(string icon in dietaryIcons)
+                {
+                    <DietaryIcon Type="@icon" ShowDesc="false"/>
+                }     
                 <hr />
                 <div>
                     <div class="text-muted" style="margin-bottom:10px;"><i class="fa-solid fa-store"></i> @product.Vendor - Booth 31</div>
@@ -67,42 +64,10 @@
                 </div>
             <div class="modal-body">
                 <ul>
-                    <li><span class="diet-icon vegan">V</span> the item is vegan</li>
-                    <li><span class="diet-icon vegetarian">VG</span> the item is vegetarian</li>
-                    <li><span class="diet-icon gluten-free">GF</span> the item is gluten friendly</li>
-                    <li><span class="diet-icon halal">HF</span> the item is halal friendly</li>
-                    <li><img style="margin-left: 4px;" src="https://cdn.discordapp.com/attachments/930235478324699181/948277092561354832/nut.png" height="32" width="32"/> the item is peanut free</li>
-                    <li>
-                        <span class="fa-stack">
-                            <i style="color: teal" class="fa-solid fa-circle fa-stack-2x"></i>
-                            <i class="fa-solid fa-fish fa-stack-1x fa-inverse"></i>
-                        </span>
-                         the item contains fish
-                   </li>
-                   <li>
-                        <span class="fa-stack">
-                            <i style="color: cornflowerblue" class="fa-solid fa-circle fa-stack-2x"></i>
-                            <i class="fa-solid fa-ice-cream fa-stack-1x fa-inverse"></i>
-                        </span>
-                         the item contains dairy
-                   </li>
-
-                   <li>
-                        <span class="fa-stack">
-                            <i style="color: orangered" class="fa-solid fa-circle fa-stack-2x"></i>
-                            <i class="fa-solid fa-egg fa-stack-1x fa-inverse"></i>
-                        </span>
-                         the item contains eggs
-                   </li>
-
-                   <li>
-                        <span class="fa-stack">
-                            <i style="color: darkgoldenrod" class="fa-solid fa-circle fa-stack-2x"></i>
-                            <i class="fa-solid fa-martini-glass fa-stack-1x fa-inverse"></i>
-                        </span>
-                         the item contains alcohol
-                   </li>
-
+                    @foreach(string icon in allDietaryIcons)
+                    {
+                        <li><DietaryIcon Type="@icon" ShowDesc="true"/></li>
+                    }
                 </ul>
             </div>
             <div class="modal-footer">
@@ -118,14 +83,41 @@
     [Parameter]
     public string Name { get; set; }       // The name of the vendor we are to show
     private Product product;
+    private List<string> dietaryIcons = new List<string>();
 
     protected override void OnInitialized()
     {
         product = Products.GetAll().Where(p => p.Name.Equals(Name)).First();
+        GetProductDietaryIcons();
     }
 
     private bool Marked = false;
 
-    private string MarkedCSS => Products.IsActive(Name) ? "fa-solid" : "fa-regular";    
+    private string MarkedCSS => Products.IsActive(Name) ? "fa-solid" : "fa-regular";
+
+    /// <summary>
+    /// For the model legend
+    /// </summary>
+    private List<string> allDietaryIcons = new List<string>()
+        {
+            "vegan",
+            "vegetarian",
+            "glutenfree",
+            "halal",
+            "nuts",
+            "fish",
+            "lactose",
+            "eggs",
+            "alcohol"
+        };
+
+
+    private void GetProductDietaryIcons() {
+        if (product.Lactose == 1) dietaryIcons.Add("lactose");
+        if (product.Glutenfree == 1) dietaryIcons.Add("glutenfree");
+        if (product.Nuts == 1) dietaryIcons.Add("nuts");
+        if (product.Vegan == 1) dietaryIcons.Add("vegan");
+        if (product.Vegetarian == 1) dietaryIcons.Add("vegetarian");
+    }
 
 }
