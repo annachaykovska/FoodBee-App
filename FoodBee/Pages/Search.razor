@@ -15,7 +15,9 @@
     @*Top search/filter bar*@
     <div style="position: fixed; z-index: 4; background: whitesmoke; width: 92%">
         <div class="input-group" style="margin-bottom: 5px">
-            <button onclick="window.history.go(-1);" type="button" class="btn btn-outline-dark"><i class="fa-solid fa-angle-left"></i></button>
+            <NavLink href="/">
+                <button type="button" class="btn btn-outline-dark"><i class="fa-solid fa-angle-left"></i></button>
+            </NavLink>
             <input @bind="QueryString" @bind:event="oninput" style="margin: 0 5px;" type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
 
             <div class="dropdown">
