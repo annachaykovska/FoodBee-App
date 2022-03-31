@@ -10,93 +10,97 @@
 @inject IFoodBeeService<Product> Products
 
 
-<div class="container">
+<div class="container" style="position: relative">
 
     @*Top search/filter bar*@
-    <div class="input-group" style="margin-bottom: 5px">
-        <button onclick="window.history.go(-1);" type="button" class="btn btn-outline-dark"><i class="fa-solid fa-angle-left"></i></button>
-        <input @bind="QueryString" @bind:event="oninput" style="margin: 0 5px;" type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+    <div style="position: fixed; z-index: 4; background: whitesmoke; width: 92%">
+        <div class="input-group" style="margin-bottom: 5px">
+            <button onclick="window.history.go(-1);" type="button" class="btn btn-outline-dark"><i class="fa-solid fa-angle-left"></i></button>
+            <input @bind="QueryString" @bind:event="oninput" style="margin: 0 5px;" type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
 
-        <div class="dropdown">
-            <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
-                <i class="fa-solid fa-arrow-down-wide-short"></i>
-            </button>
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item @ActiveSortClass(SortPredicate.Cheapest)" @onclick="(e => SortBy = SortPredicate.Cheapest)">Cheapest</a>
-                <a class="dropdown-item @ActiveSortClass(SortPredicate.Closest)" @onclick="(e => SortBy = SortPredicate.Closest)">Closest</a>
-                <a class="dropdown-item @ActiveSortClass(SortPredicate.Newest)" @onclick="(e => SortBy = SortPredicate.Newest)">Newest</a>
-            </div>
-        </div>
-
-        <div class="dropdown" style="margin-left: 5px;">
-            <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
-                <i class="fa-solid @ShowingIcon"></i>
-            </button>
-            <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item @ProductsActive" @onclick="(e => ShowVendors = false)">Show Products</a>
-                <a class="dropdown-item @VendorsActive" @onclick="(e => ShowVendors = true)">Show Vendors</a>
-            </div>
-        </div>
-
-    </div>
-    @*Filters accordion*@
-    <div class="accordion" id="accordionExample">
-        <div class="card">
-            <div class="card-header" id="headingOne">
-                <h2 class="mb-0">
-                    <button class="btn btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" @onclick="ToggleFiltersTray">
-                        @Filters.GetNumActive() Filters
-                        <span style="float: right"><i class="fa-solid fa-angle-down @RotateIconClass"></i></span>
-                    </button>
-                </h2>
-            </div>
-
-            <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
-                <div class="card-body">
-                    @if (Filters.GetActive().Any())
-                    {
-                        <div style="width: 100%">
-                            <small>Active</small>
-                            <button style="float: right" type="button" class="btn btn-outline-danger btn-sm" @onclick="@(e => Filters.ClearActive())">Clear Filters</button>
-
-                        </div>
-                        
-                        <br />    
-                        @foreach(string filter in Filters.GetActive())
-                        {
-                            <button @onclick="@(e => Filters.Toggle(filter))" type="button" class="btn btn-warning filter-btn">@filter <i class="fa-solid fa-xmark"></i></button>
-                        }
-                        <hr />
-                    }
-                   
-                    @foreach(string category in Filters.GetAll().Select(f => f.Category).Distinct().ToList())
-                    {
-                        <div>
-                            <small>@category</small>
-                            <br>
-                            @foreach(Filter filter in Filters.GetAll().Where(f => f.Category == category))
-                            {
-                                if (!Filters.GetActive().Contains(filter.Name))
-                                {
-                                    <button @onclick="@(e => Filters.Toggle(filter.Name))" type="button" class="btn btn-warning filter-btn">@filter.Name <i class="fa-solid fa-plus"></i></button>
-                                }
-                            }
-                        </div>  
-                    }
+            <div class="dropdown">
+                <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
+                    <i class="fa-solid fa-arrow-down-wide-short"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item @ActiveSortClass(SortPredicate.Cheapest)" @onclick="(e => SortBy = SortPredicate.Cheapest)">Cheapest</a>
+                    <a class="dropdown-item @ActiveSortClass(SortPredicate.Closest)" @onclick="(e => SortBy = SortPredicate.Closest)">Closest</a>
+                    <a class="dropdown-item @ActiveSortClass(SortPredicate.Newest)" @onclick="(e => SortBy = SortPredicate.Newest)">Newest</a>
                 </div>
             </div>
+
+            <div class="dropdown" style="margin-left: 5px;">
+                <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
+                    <i class="fa-solid @ShowingIcon"></i>
+                </button>
+                <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item @ProductsActive" @onclick="(e => ShowVendors = false)">Show Products</a>
+                    <a class="dropdown-item @VendorsActive" @onclick="(e => ShowVendors = true)">Show Vendors</a>
+                </div>
+            </div>
+
         </div>
-        @*This is just a placeholder so the bottom of the accordion is complete*@
-        <div class="card"></div>
+        @*Filters accordion*@
+        <div class="accordion" id="accordionExample">
+            <div class="card">
+                <div class="card-header" id="headingOne">
+                    <h2 class="mb-0">
+                        <button class="btn btn-block text-left" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne" @onclick="ToggleFiltersTray">
+                            @Filters.GetNumActive() Filters
+                            <span style="float: right"><i class="fa-solid fa-angle-down @RotateIconClass"></i></span>
+                        </button>
+                    </h2>
+                </div>
+
+                <div id="collapseOne" class="collapse" aria-labelledby="headingOne" data-parent="#accordionExample">
+                    <div class="card-body">
+                        @if (Filters.GetActive().Any())
+                        {
+                            <div style="width: 100%">
+                                <small>Active</small>
+                                <button style="float: right" type="button" class="btn btn-outline-danger btn-sm" @onclick="@(e => Filters.ClearActive())">Clear Filters</button>
+
+                            </div>
+                        
+                            <br />    
+                            @foreach(string filter in Filters.GetActive())
+                            {
+                                <button @onclick="@(e => Filters.Toggle(filter))" type="button" class="btn btn-warning filter-btn">@filter <i class="fa-solid fa-xmark"></i></button>
+                            }
+                            <hr />
+                        }
+                   
+                        @foreach(string category in Filters.GetAll().Select(f => f.Category).Distinct().ToList())
+                        {
+                            <div>
+                                <small>@category</small>
+                                <br>
+                                @foreach(Filter filter in Filters.GetAll().Where(f => f.Category == category))
+                                {
+                                    if (!Filters.GetActive().Contains(filter.Name))
+                                    {
+                                        <button @onclick="@(e => Filters.Toggle(filter.Name))" type="button" class="btn btn-warning filter-btn">@filter.Name <i class="fa-solid fa-plus"></i></button>
+                                    }
+                                }
+                            </div>  
+                        }
+                    </div>
+                </div>
+            </div>
+            @*This is just a placeholder so the bottom of the accordion is complete*@
+            <div class="card"></div>
+        </div>
     </div>
 
-    @if (ShowVendors)
-    {
-        <VendorList Vendors="@SearchVendors()"/>
-    } else
-    {
-        <ProductList Products="@SearchProducts()"/>   
-    }
+    <div style="margin-top: 115px">
+        @if (ShowVendors)
+        {
+            <VendorList Vendors="@SearchVendors()"/>
+        } else
+        {
+            <ProductList Products="@SearchProducts()"/>   
+        }
+    </div>
 
 </div>
 
