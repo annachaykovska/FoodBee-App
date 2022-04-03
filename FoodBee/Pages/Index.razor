@@ -143,10 +143,11 @@ else
     // Whether the filte menu is open or not
     private bool collapseMenu = true;
 
-    protected override async Task OnInitializedAsync()
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
     {
         var nonMobile = await JsRuntime.InvokeAsync<bool>("isNonMobile");
-        if (nonMobile)
+        if (nonMobile && firstRender)
         {
             await JsRuntime.InvokeVoidAsync("alert", "Warning! FoodBee is optimized for portrait mobile devices only. It will work on larger devices but is intended to mimic a mobile application."); // Alert   
         }

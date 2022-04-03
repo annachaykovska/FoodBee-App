@@ -1,11 +1,12 @@
 ﻿@page "/search"
+
 @using FoodBee.Models
 @using FoodBee.Services
 @using FoodBee.Components
 @using System.Reflection
-@inject HttpClient http
-@inject IFoodBeeService<Filter> Filters
 
+@inject NavigationManager Navigator
+@inject IFoodBeeService<Filter> Filters
 @inject IFoodBeeService<Vendor> Vendors
 @inject IFoodBeeService<Product> Products
 
@@ -15,9 +16,9 @@
     @*Top search/filter bar*@
     <div style="position: fixed; z-index: 4; background: whitesmoke; width: 92%">
         <div class="input-group" style="margin-bottom: 5px">
-            <NavLink href="/">
-                <button type="button" class="btn btn-outline-dark"><i class="fa-solid fa-angle-left"></i></button>
-            </NavLink>
+            
+            <button type="button" class="btn btn-outline-dark" @onclick="@(e => Navigator.NavigateTo(Navigator.BaseUri))"><i class="fa-solid fa-angle-left"></i></button>
+            
             <input @bind="QueryString" @bind:event="oninput" style="margin: 0 5px;" type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
 
             <div class="dropdown">
@@ -127,6 +128,8 @@
     /// <returns>Return products that match the users search: filters, query string, and sort</returns>
     private List<Product> SearchProducts()
     {
+
+        Console.WriteLine(Navigator);
         //if (!Products.GetAll().Any()) return new List<Product>();
 
         List<Product> filteredProducts = Products.GetAll();

@@ -1,8 +1,10 @@
 ﻿@page "/saved"
+
 @using FoodBee.Components
 @using FoodBee.Models
 @using FoodBee.Services
 
+@inject NavigationManager Navigator
 @inject IFoodBeeService<Vendor> Vendors
 @inject IFoodBeeService<Product> Products
 
@@ -10,9 +12,8 @@
 
 <div class="container">
     <div class="input-group" style="margin-bottom: 10px">
-        <NavLink href="/">
-            <button type="button" class="btn btn-outline-dark"><i class="fa-solid fa-angle-left"></i></button>
-        </NavLink>
+        <button type="button" class="btn btn-outline-dark" @onclick="@(e => Navigator.NavigateTo(Navigator.BaseUri))"><i class="fa-solid fa-angle-left"></i></button>
+
         <div style="margin-left: 10px; flex: 1;">
             <h3>Saved</h3>
         </div>
