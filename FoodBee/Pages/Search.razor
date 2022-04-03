@@ -128,9 +128,7 @@
     /// <returns>Return products that match the users search: filters, query string, and sort</returns>
     private List<Product> SearchProducts()
     {
-
-        Console.WriteLine(Navigator);
-        //if (!Products.GetAll().Any()) return new List<Product>();
+       if (!Products.GetAll().Any()) return new List<Product>();
 
         List<Product> filteredProducts = Products.GetAll();
 

@@ -149,7 +149,7 @@ else
         var nonMobile = await JsRuntime.InvokeAsync<bool>("isNonMobile");
         if (nonMobile && firstRender)
         {
-            await JsRuntime.InvokeVoidAsync("alert", "Warning! FoodBee is optimized for portrait mobile devices only. It will work on larger devices but is intended to mimic a mobile application."); // Alert   
+            await JsRuntime.InvokeVoidAsync("alert", "Warning! FoodBee is optimized for portrait mobile devices only. It will work on larger devices but is intended to mimic a mobile application. Please reopen on a smaller device."); // Alert   
         }
     }
 
