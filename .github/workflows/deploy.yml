@@ -1,0 +1,42 @@
+# Source: https://www.meziantou.net/publishing-a-blazor-webassembly-application-to-github-pages.htm
+
+name: 'Publish application'
+on: 
+  push:
+    branches:
+      - main
+
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      DOTNET_NOLOGO: true
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Replace Base Url
+        run:  sed -i 's/<base[[:space:]]*href="\/"[[:space:]]*\/>/<base href="\/FoodBee-App\/" \/>/g' FoodBee/wwwroot/index.html
+
+      - name: Setup .NET Core
+        uses: actions/setup-dotnet@v1
+        with:
+          dotnet-version: '5.0.x'
+      
+      - name: Test
+        run: dotnet test
+      
+      - name: Publish
+        run: dotnet publish FoodBee/FoodBee.csproj --configuration Release
+      
+      - name: GitHub Pages action
+        if: ${{ github.ref == 'refs/heads/main' }} # Publish only when the push is on main
+        uses: peaceiris/actions-gh-pages@v3.6.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: FoodBee/bin/Release/net5.0/publish/wwwroot
+          allow_empty_commit: false
+          keep_files: false
+          force_orphan: true

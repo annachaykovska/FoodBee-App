@@ -1,18 +1,21 @@
 ﻿@page "/product/{name}"
-@inject IFoodBeeService<Product> Products
+
+
 @using FoodBee.Models
 @using FoodBee.Services
 @using FoodBee.Components
 
+@inject NavigationManager Navigator
+@inject IFoodBeeService<Product> Products
+
 <div class="container">
-    <div class="input-group">
-        <NavLink href="/search">
-            <button type="button" class="btn btn-outline-dark"><i class="fa-solid fa-angle-left"></i></button>
-        </NavLink>
-        <div style="margin-left: 10px; flex: 1;">
-            <h3>Product</h3>
+    <div class="input-group" style="margin-bottom: 12px">
+        <button type="button" class="btn btn-outline-dark" @onclick="@(e => Navigator.NavigateTo(Navigator.BaseUri + "search"))"><i class="fa-solid fa-angle-left"></i></button>
+
+        <div style="margin-left: 10px;">
+            <span style="font-size: 24px;">Product</span>
         </div>
-        <button style="margin-bottom: 5px" @onclick="@(e => Products.Toggle(Name))" type="button" class="btn btn-warning btn-lg"><i class="@MarkedCSS fa-bookmark"></i></button>
+        <button style="position: absolute; right: 5px" @onclick="@(e => Products.Toggle(Name))" type="button" class="btn btn-warning btn-lg"><i class="@MarkedCSS fa-bookmark"></i></button>
     </div>
 
     @if (product != null)
