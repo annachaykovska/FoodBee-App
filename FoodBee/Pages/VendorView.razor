@@ -37,7 +37,7 @@
             }
             <div class="card-body">
                 <div class="text-muted" style="margin-bottom: 10px"><i class="fa-solid fa-store"></i> Booth @vendor.Booth</div>
-                <a class="btn btn-primary btn-block" href="/navigate=@Name" role="button"><i class="fa-solid fa-map-pin"></i> Go To Booth</a>
+                <a class="btn btn-primary btn-block" href="@(Navigator.BaseUri + "navigate=" + @Name)" role="button"><i class="fa-solid fa-map-pin"></i> Go To Booth</a>
             </div>
         </div>
     }

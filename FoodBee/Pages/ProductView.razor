@@ -45,8 +45,8 @@
                 <div>
                     <div class="text-muted" style="margin-bottom:10px;"><i class="fa-solid fa-store"></i> @product.Vendor - Booth 31</div>
                 
-                    <a class="btn btn-primary btn-block" href="/navigate=@product.Vendor" role="button"><i class="fa-solid fa-map-pin"></i> Go To Booth</a>
-                    <a class="btn btn-secondary btn-block" href="vendor/@product.Vendor" role="button"><i class="fa-solid fa-basket-shopping"></i> View Vendor</a>
+                    <a class="btn btn-primary btn-block" href="@(Navigator.BaseUri + "navigate=" + @product.Vendor)" role="button"><i class="fa-solid fa-map-pin"></i> Go To Booth</a>
+                    <a class="btn btn-secondary btn-block" href="@(Navigator.BaseUri + @product.Vendor)" role="button"><i class="fa-solid fa-basket-shopping"></i> View Vendor</a>
                 </div>
             </div>
         </div>
