@@ -10,7 +10,7 @@ html, body {
     height: 100vh;
 }
 
-a {
+.vendor-link {
     text-decoration: none;
     color: initial;
 }
