@@ -15,14 +15,14 @@ namespace FoodBee
             var builder = WebAssemblyHostBuilder.CreateDefault(args);
             builder.RootComponents.Add<App>("#app");
 
-            builder.Services.AddSingleton<IFoodBeeService<MapLayer>, MapLayerService<MapLayer>>();
-            builder.Services.AddSingleton<IFoodBeeService<Filter>, FilterService<Filter>>();
+            builder.Services.AddScoped<IFoodBeeService<MapLayer>, MapLayerService<MapLayer>>();
+            builder.Services.AddScoped<IFoodBeeService<Filter>, FilterService<Filter>>();
 
             builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
             builder.Services.AddScoped<IFoodBeeService<Vendor>, VendorService<Vendor>>();
             builder.Services.AddScoped<IFoodBeeService<Product>, ProductService<Product>>();
-
+            builder.Services.AddScoped<ISearchService, SearchService>();
 
             var host = builder.Build();
 

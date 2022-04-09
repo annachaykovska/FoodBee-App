@@ -36,11 +36,12 @@
                         <i class="fa-solid fa-circle-info"></i>
                     </button>
                 </div>
-
-                @foreach(string icon in dietaryIcons)
-                {
-                    <DietaryIcon Type="@icon" ShowDesc="false"/>
-                }     
+                <div>
+                    @foreach(string icon in dietaryIcons)
+                    {
+                        <DietaryIcon Type="@icon" ShowDesc="false"/>
+                    }   
+                </div>
                 <hr />
                 <div>
                     <div class="text-muted" style="margin-bottom:10px;"><i class="fa-solid fa-store"></i> @product.Vendor - Booth 31</div>

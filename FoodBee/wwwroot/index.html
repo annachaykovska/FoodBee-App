@@ -32,18 +32,18 @@
     <script>navigator.serviceWorker.register('service-worker.js');</script>
     <script src="js/leader-line.min.js"></script>
     <script>
-        var navLine;
+        var navLines = [];
 
         function drawNavLine() {
-            navLine = new LeaderLine(
+            navLines.push(new LeaderLine(
                 document.getElementById('you-are-here'),
                 document.getElementById('destination')
-            );
+            ));
         }
 
         function clearNavLine() {
-            navLine ? navLine.remove() : null;
-            navLine = undefined;
+            navLines.forEach(l => l.remove());
+            navLines = [];
         }
 
         function scrollToDestination() {

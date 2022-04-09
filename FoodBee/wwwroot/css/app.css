@@ -10,7 +10,7 @@ html, body {
     height: 100vh;
 }
 
-a {
+.vendor-link {
     text-decoration: none;
     color: initial;
 }
@@ -76,12 +76,13 @@ a {
 }
 
 .diet-icon {
+    vertical-align: middle;
     height: 32px;
     width: 32px;
     border-radius: 50%;
     padding: 5px;
     text-align: center;
-    margin-left: 4px;
+    margin: 0px 2px;
     display: inline-block;
     min-width: max-content;
 }
