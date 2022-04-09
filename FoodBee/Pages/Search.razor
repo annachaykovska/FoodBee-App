@@ -9,6 +9,7 @@
 @inject IFoodBeeService<Filter> Filters
 @inject IFoodBeeService<Vendor> Vendors
 @inject IFoodBeeService<Product> Products
+@inject ISearchService SearchService
 
 
 <div class="container" style="position: relative">
@@ -19,16 +20,16 @@
             
             <button type="button" class="btn btn-outline-dark" @onclick="@(e => Navigator.NavigateTo(Navigator.BaseUri))"><i class="fa-solid fa-angle-left"></i></button>
             
-            <input @bind="QueryString" @bind:event="oninput" style="margin: 0 5px;" type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
+            <input @bind="SearchService.SearchString" @bind:event="oninput" style="margin: 0 5px;" type="search" class="form-control rounded" placeholder="Search" aria-label="Search" aria-describedby="search-addon" />
 
             <div class="dropdown">
                 <button class="btn btn-warning dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-expanded="false">
                     <i class="fa-solid fa-arrow-down-wide-short"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item @ActiveSortClass(SortPredicate.Cheapest)" @onclick="(e => SortBy = SortPredicate.Cheapest)">Cheapest</a>
-                    <a class="dropdown-item @ActiveSortClass(SortPredicate.Closest)" @onclick="(e => SortBy = SortPredicate.Closest)">Closest</a>
-                    <a class="dropdown-item @ActiveSortClass(SortPredicate.Newest)" @onclick="(e => SortBy = SortPredicate.Newest)">Newest</a>
+                    <a class="dropdown-item @ActiveSortClass(SortPredicate.Cheapest)" @onclick="(e => SearchService.SortBy = SortPredicate.Cheapest)">Cheapest</a>
+                    <a class="dropdown-item @ActiveSortClass(SortPredicate.Closest)" @onclick="(e => SearchService.SortBy = SortPredicate.Closest)">Closest</a>
+                    <a class="dropdown-item @ActiveSortClass(SortPredicate.Newest)" @onclick="(e => SearchService.SortBy = SortPredicate.Newest)">Newest</a>
                 </div>
             </div>
 
@@ -37,8 +38,8 @@
                     <i class="fa-solid @ShowingIcon"></i>
                 </button>
                 <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item @ProductsActive" @onclick="(e => ShowVendors = false)">Show Products</a>
-                    <a class="dropdown-item @VendorsActive" @onclick="(e => ShowVendors = true)">Show Vendors</a>
+                    <a class="dropdown-item @ProductsActive" @onclick="(e => SearchService.ShowVendors = false)">Show Products</a>
+                    <a class="dropdown-item @VendorsActive" @onclick="(e => SearchService.ShowVendors = true)">Show Vendors</a>
                 </div>
             </div>
 
@@ -96,12 +97,12 @@
     </div>
 
     <div style="margin-top: 115px">
-        @if (ShowVendors)
+        @if (SearchService.ShowVendors)
         {
-            <VendorList Vendors="@SearchVendors()"/>
+            <VendorList Vendors="@SearchService.SearchVendors()"/>
         } else
         {
-            <ProductList Products="@SearchProducts()"/>   
+            <ProductList Products="@SearchService.SearchProducts()"/>   
         }
     </div>
 
@@ -109,93 +110,16 @@
 
 @code {
 
-    private string QueryString { get; set; }
-    private SortPredicate SortBy { get; set; }
-
     private bool filtersOpen = false;
 
     private void ToggleFiltersTray() => filtersOpen = !filtersOpen;
     private string RotateIconClass => filtersOpen ? "fa-rotate-180" : null;
 
-    private string ProductsActive => ShowVendors ? null : "active";
-    private string VendorsActive => ShowVendors ? "active" : null;
+    private string ProductsActive => SearchService.ShowVendors ? null : "active";
+    private string VendorsActive => SearchService.ShowVendors ? "active" : null;
 
-    private string ActiveSortClass(SortPredicate predicate) => predicate == SortBy ? "active" : null;
+    private string ActiveSortClass(SortPredicate predicate) => predicate == SearchService.SortBy ? "active" : null;
 
-    private bool ShowVendors = false;
-    private string ShowingIcon => ShowVendors ? "fa-map-location-dot" : "fa-bag-shopping";
+    private string ShowingIcon => SearchService.ShowVendors ? "fa-map-location-dot" : "fa-bag-shopping";
 
-    /// <returns>Return products that match the users search: filters, query string, and sort</returns>
-    private List<Product> SearchProducts()
-    {
-       if (!Products.GetAll().Any()) return new List<Product>();
-
-        List<Product> filteredProducts = Products.GetAll();
-
-        // filter by search string
-        if (!string.IsNullOrEmpty(QueryString))
-        {
-            filteredProducts = filteredProducts.FindAll(p => p.Name.ToLower().Contains(QueryString.ToLower()) || p.Description.ToLower().Contains(QueryString.ToLower()));
-        }
-
-        // filter by active filter selection
-        List<Filter> active = Filters.GetAll().FindAll(f => Filters.GetActive().Contains(f.Name) && !string.IsNullOrEmpty(f.DataField));    // Get the active filters that have a DataField
-        filteredProducts = filteredProducts.FindAll(p => active.Aggregate(true, (acc, val) => acc && p.GetType().GetProperty(val.DataField).GetValue(p, null).Equals(1)));      // filter to products that satisfy all actiuve filters
-
-        // Sort the Products
-        filteredProducts.Sort((p1, p2) =>
-        {
-            if (SortBy.Equals(SortPredicate.Closest)) {     // Sort by booth asc
-            return Vendors.GetAll().Find(v => v.Name == p1.Vendor).Booth.CompareTo(Vendors.GetAll().Find(v => v.Name == p2.Vendor).Booth);    
-            }
-            else if (SortBy.Equals(SortPredicate.Cheapest)) {   // Sort by price asc  
-            return p1.Price.CompareTo(p2.Price);               
-            }
-            else return 0;      // default (newest - we dont really have a way of finding this) 
-    });
-
-        return filteredProducts;
-    }
-
-    /// <returns>Return vendors that match the users search: filters, query string, and sort</returns>
-    private List<Vendor> SearchVendors()
-    {
-        if (!Vendors.GetAll().Any()) return new List<Vendor>();
-
-        List<Vendor> filteredVendors = Vendors.GetAll();
-
-        if (!string.IsNullOrEmpty(QueryString))
-        {
-            filteredVendors = filteredVendors.FindAll(p => p.Name.ToLower().Contains(QueryString.ToLower()) || p.Description.ToLower().Contains(QueryString.ToLower()));
-        }
-
-        // filter by active filter selection
-        List<Filter> active = Filters.GetAll().FindAll(f => Filters.GetActive().Contains(f.Name) && !string.IsNullOrEmpty(f.DataField));    // Get the active filters that have a DataField
-        filteredVendors = filteredVendors.FindAll(v =>
-        {
-            List<Product> vendorProducts = Products.GetAll().FindAll(p => p.Vendor == v.Name);
-            // Look through the vendor's products, if at least one satifies the active filters we return true
-            return vendorProducts.Aggregate(false, (accOuter, p) => accOuter || active.Aggregate(true, (accInner, f) => accInner && p.GetType().GetProperty(f.DataField).GetValue(p, null).Equals(1)));
-
-        });
-
-        // Sort the vendors
-        filteredVendors.Sort((v1, v2) =>
-        {
-            if (SortBy.Equals(SortPredicate.Closest)) return v1.Booth.CompareTo(v2.Booth);    // Sort by booth asc
-            else if (SortBy.Equals(SortPredicate.Cheapest))                                   // Sort by ave price asc
-            {   // Return vendor with cheapest average price accross their products
-                List<Product> v1Products = Products.GetAll().Where(p => p.Vendor == v1.Name).ToList();
-                var v1PriceAve = v1Products.Aggregate(0, (acc, p) => acc + p.Price) / v1Products.Count();
-
-                List<Product> v2Products = Products.GetAll().Where(p => p.Vendor == v2.Name).ToList();
-                var v2PriceAve = v2Products.Aggregate(0, (acc, p) => acc + p.Price) / v2Products.Count();
-
-                return v1PriceAve.CompareTo(v2PriceAve);
-            }
-            else return 0;      // default - newest
-        });
-
-        return filteredVendors;
-    } 
 }

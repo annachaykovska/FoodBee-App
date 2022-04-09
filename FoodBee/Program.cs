@@ -22,7 +22,7 @@ namespace FoodBee
 
             builder.Services.AddScoped<IFoodBeeService<Vendor>, VendorService<Vendor>>();
             builder.Services.AddScoped<IFoodBeeService<Product>, ProductService<Product>>();
-
+            builder.Services.AddScoped<ISearchService, SearchService>();
 
             var host = builder.Build();
 

@@ -7,8 +7,7 @@
 @inject NavigationManager Navigator
 @inject IFoodBeeService<Vendor> Vendors
 @inject IFoodBeeService<Product> Products
-
-@*Nothing special here yet just going to re display the vendor list until vertical protoytpe *@
+@inject ISearchService SearchService
 
 <div class="container">
     <div class="input-group" style="margin-bottom: 10px">
@@ -23,13 +22,13 @@
                 <i class="fa-solid @ShowingIcon"></i>
             </button>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item @ProductsActive" @onclick="(e => ShowVendors = false)">Show Products</a>
-                <a class="dropdown-item @VendorsActive" @onclick="(e => ShowVendors = true)">Show Vendors</a>
+                <a class="dropdown-item @ProductsActive" @onclick="(e => SearchService.ShowVendors = false)">Show Products</a>
+                <a class="dropdown-item @VendorsActive" @onclick="(e => SearchService.ShowVendors = true)">Show Vendors</a>
             </div>
         </div>
     </div>
     
-    @if (ShowVendors)
+    @if (SearchService.ShowVendors)
     {
         <VendorList Vendors="@BookmarkedVendors"/>
     }
@@ -41,14 +40,13 @@
 </div>
 
 @code {
-    private bool ShowVendors = false;
 
     private List<Vendor> BookmarkedVendors => Vendors.GetAll().Where(v => Vendors.IsActive(v.Name)).ToList();
     private List<Product> BookmarkedProducts => Products.GetAll().Where(p => Products.IsActive(p.Name)).ToList();
 
-    private string ProductsActive => ShowVendors ? null : "active";
-    private string VendorsActive => ShowVendors ? "active" : null;
+    private string ProductsActive => SearchService.ShowVendors ? null : "active";
+    private string VendorsActive => SearchService.ShowVendors ? "active" : null;
 
-    private string ShowingIcon => ShowVendors ? "fa-map-location-dot" : "fa-bag-shopping";
+    private string ShowingIcon => SearchService.ShowVendors ? "fa-map-location-dot" : "fa-bag-shopping";
 
 }
