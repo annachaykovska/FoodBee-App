@@ -41,3 +41,8 @@ Since FooBee was developed as a web-based system with the intention of being a m
 - Tapping a booth on the map will also have the navigation point to the same (booth 813)
 - Filters: 'Other', '$', '$$', '$$$', 'Alcoholic'
 - Map Layers: just randomly spawns a differenly coloured map image with no correlation to what is selected
+- Map pinch zooming
+
+___
+
+<a href="https://www.flaticon.com/free-icons/bee" title="bee icons">Bee icons created by Freepik - Flaticon</a>
