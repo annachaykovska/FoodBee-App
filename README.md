@@ -29,7 +29,7 @@ Since FooBee was developed as a web-based system with the intention of being a m
 - Map: user can pan around the map and see their "current location"
 - Searching: user can query vendors and products from a pre-loaded dataset.
 - Filters: Food, Drink, Gluten Free, Lactose Free, No Nuts, Vedgan, Vegetarian
-- Soring: Cheapest, Closest (just orders based on ascending booth number), Newest (just returns the order from the dataset)
+- Sorting: Cheapest, Closest (just orders based on ascending booth number), Newest (just returns the order from the dataset)
 - Navigation: user can follow paths through vendors to products and vice-verse
 - Bookmarking: user can save vendors and products using the bookmark button and they will show in their list of favourites (saves are only session based howver and are lost on a page refresh)
 
