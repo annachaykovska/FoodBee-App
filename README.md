@@ -8,6 +8,8 @@
 
 FoodBee is an application meant for helping patrons of food and beverage events navigate, search, and save their favourite local vendors. Featuring a venue map with navigation, search and the ability to bookmark enrtires, FoodBee allows users to quickly and efficiently find their way while on the go. FoodBee was developed in a web environment due to dsign constraints, however it is supposed to emulate a truly mobile experience. Event goers are more often than not going to these events with minimal towage, where a mobile smart phone is the most prominent use case. They need a platform which can be quickly referenced while walking, talking, eat or drinkin, so FoodBee takes that into account.
 
+[Demo Video](https://drive.google.com/file/d/1nOpzxTP0mEK39p7hwSfC5tmEg_jpiMjf/view?usp=sharing)
+
 ## Installation
 To use the FoodBee demo application you can either clone and run the source youself. This requires Visual Studio and .NET 5.0, but to make life easier we have deployed the application using GitHub pages where you can access FoodBee from anywhere.
 
